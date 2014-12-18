@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -17,20 +19,21 @@ public class Course {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int cid;
 	
-	@Column(name="courseid")
-	private int courseid;
-	
-	@Column(name="coursename")
-	private String coursename;
-	
-	@Column(name="teachername")
-	private String teachername;
+	@ManyToOne(targetEntity = User.class)
+	@JoinColumn(name="uid")
+	private int uid;
 	
 	@Column(name="classroom")
 	private String classroom;
 	
+	@Column(name="coursename")
+	private String coursename;
+	
 	@Column(name="coursetime")
 	private String coursetime;
+	
+	@Column(name="courseid")
+	private String courseid;
 	
 	@Column(name="studentnumber")
 	private int studentnumber;
@@ -46,20 +49,12 @@ public class Course {
 		this.cid = cid;
 	}
 
-	public String getCoursename() {
-		return coursename;
+	public int getUid() {
+		return uid;
 	}
 
-	public void setCoursename(String coursename) {
-		this.coursename = coursename;
-	}
-
-	public String getTeachername() {
-		return teachername;
-	}
-
-	public void setTeachername(String teachername) {
-		this.teachername = teachername;
+	public void setUid(int uid) {
+		this.uid = uid;
 	}
 
 	public String getClassroom() {
@@ -70,61 +65,43 @@ public class Course {
 		this.classroom = classroom;
 	}
 
-	/**
-	 * @return the coursetime
-	 */
+	public String getCoursename() {
+		return coursename;
+	}
+
+	public void setCoursename(String coursename) {
+		this.coursename = coursename;
+	}
+
 	public String getCoursetime() {
 		return coursetime;
 	}
 
-	/**
-	 * @param coursetime the coursetime to set
-	 */
 	public void setCoursetime(String coursetime) {
 		this.coursetime = coursetime;
 	}
 
-	/**
-	 * @return the createtime
-	 */
-	public Timestamp getCreatetime() {
-		return createtime;
+	public String getCourseid() {
+		return courseid;
 	}
 
-	/**
-	 * @param createtime the createtime to set
-	 */
-	public void setCreatetime(Timestamp createtime) {
-		this.createtime = createtime;
+	public void setCourseid(String courseid) {
+		this.courseid = courseid;
 	}
 
-	/**
-	 * @return the studentnumber
-	 */
 	public int getStudentnumber() {
 		return studentnumber;
 	}
 
-	/**
-	 * @param studentnumber the studentnumber to set
-	 */
 	public void setStudentnumber(int studentnumber) {
 		this.studentnumber = studentnumber;
 	}
 
-	/**
-	 * @return the courseid
-	 */
-	public int getCourseid() {
-		return courseid;
+	public Timestamp getCreatetime() {
+		return createtime;
 	}
 
-	/**
-	 * @param courseid the courseid to set
-	 */
-	public void setCourseid(int courseid) {
-		this.courseid = courseid;
+	public void setCreatetime(Timestamp createtime) {
+		this.createtime = createtime;
 	}
-	
-
 }

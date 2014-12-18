@@ -80,7 +80,7 @@ public class AdminMessageBox {
 	
 	
 	@RequestMapping(value="/sendamessage",method=RequestMethod.POST)
-	public @ResponseBody String sendmessage(@RequestParam(value="receiver")String receiver,@RequestParam(value="messagecontent")String messagecontent,
+	public @ResponseBody String sendmessage(@RequestParam(value="receiver")int receiver,@RequestParam(value="messagecontent")String messagecontent,
 			HttpServletRequest request) throws UnsupportedEncodingException{
 		Message message = new Message();
 		message.setReceiver(receiver);
@@ -88,11 +88,11 @@ public class AdminMessageBox {
 		Cookie [] cookies = request.getCookies();
 		for(int i=0;i<cookies.length;i++)
 		{
-			if(cookies[i].getName().equals("username"))
+			if(cookies[i].getName().equals("uid"))
 			{
 				
 				String sender = cookies[i].getValue();
-				message.setSender(sender);
+				message.setSender(Integer.parseInt(sender));
 			}
 			
 		}

@@ -45,12 +45,12 @@ public class AdminCourseController {
 	}
 	
 	@RequestMapping(value="/addacourse",method=RequestMethod.POST)
-	public @ResponseBody String addCourse(@RequestParam(value="courseid")int courseid,@RequestParam(value="coursename")String coursename,@RequestParam(value="teachername")String teachername,
+	public @ResponseBody String addCourse(@RequestParam(value="courseid")String courseid,@RequestParam(value="coursename")String coursename,@RequestParam(value="teachername")int teachername,
 			@RequestParam(value="classroom")String classroom,@RequestParam(value="coursetime")String coursetime){
 		Course course = new Course();
 		course.setCourseid(courseid);
 		course.setCoursename(coursename);
-		course.setTeachername(teachername);
+		course.setUid(teachername);
 		course.setClassroom(classroom);
 		course.setCoursetime(coursetime);
 		Session session = sessionFactory.openSession();
@@ -75,8 +75,8 @@ public class AdminCourseController {
 	}
 	
 	@RequestMapping(value="/modifycourse",method=RequestMethod.POST)
-	public @ResponseBody String modifyUser(@RequestParam(value="cid")int cid,@RequestParam(value="courseid")int courseid,@RequestParam("coursetime")String coursetime,
-			@RequestParam("classroom")String classroom,@RequestParam("coursename")String coursename,@RequestParam("teachername")String teachername){
+	public @ResponseBody String modifyUser(@RequestParam(value="cid")int cid,@RequestParam(value="courseid")String courseid,@RequestParam("coursetime")String coursetime,
+			@RequestParam("classroom")String classroom,@RequestParam("coursename")String coursename,@RequestParam("teachername")int teachername){
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		Query query = session.createQuery("from Course where cid=:cid");
@@ -87,7 +87,7 @@ public class AdminCourseController {
 		course.setCourseid(courseid);
 		course.setCoursename(coursename);
 		course.setCoursetime(coursetime);
-		course.setTeachername(teachername);
+		course.setUid(teachername);
 		session.update(course);
 		tx.commit();
 		session.close();
