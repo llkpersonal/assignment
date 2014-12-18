@@ -2,6 +2,7 @@ package com.kkxixi.assignment.entities;
 
 import java.sql.Timestamp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,11 +22,11 @@ public class Message {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int mid;
 	
-	@ManyToOne(targetEntity = User.class)
+	@ManyToOne(targetEntity = User.class , cascade = CascadeType.ALL)
 	@JoinColumn(name="sender")
 	private int sender;
 	
-	@ManyToOne(targetEntity = User.class)
+	@ManyToOne(targetEntity = User.class , cascade = CascadeType.ALL)
 	@JoinColumn(name="receiver")
 	private int receiver;
 	
