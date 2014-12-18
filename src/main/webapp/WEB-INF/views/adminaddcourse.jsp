@@ -87,7 +87,7 @@ jQuery(document).ready(function(){
                                 
                         <p>
                         	<label>课程编号</label>
-                            <span class="field"><input id="courseid" type="int" name="courseid" class="input-xlarge" /></span>
+                            <span class="field"><input id="courseid" type="text" name="courseid" class="input-xlarge" /></span>
                         </p>
                        
                         <p>
@@ -98,7 +98,11 @@ jQuery(document).ready(function(){
                         
 		                <p>
                             <label>授课教师</label>
-                             <span class="field"><input id="teachername" type="text" name="teachername" class="input-xlarge" /></span>
+                             <select id="teachername">
+                             	<c:forEach items="${teacherlist}" var="teacher">
+                             		<option value="${teacher.uid}">${teacher.name }(${teacher.username })</option>
+                             	</c:forEach>
+                             </select>
                         </p>
 						<p>
                             <label>上课教室</label>
