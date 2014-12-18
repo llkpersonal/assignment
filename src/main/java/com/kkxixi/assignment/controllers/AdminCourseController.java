@@ -23,7 +23,7 @@ import com.kkxixi.assignment.entities.User;
 
 @Controller
 public class AdminCourseController {
-	
+	//hahahaha
 	@Autowired
 	private SessionFactory sessionFactory;
 	
