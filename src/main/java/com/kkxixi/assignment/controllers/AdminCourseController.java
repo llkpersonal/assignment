@@ -1,6 +1,8 @@
 package com.kkxixi.assignment.controllers;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import net.sf.json.JSONObject;
 
@@ -30,8 +32,8 @@ public class AdminCourseController {
 		ModelAndView model = new ModelAndView();
 		model.setViewName("admincourseman");
 		Session session = sessionFactory.openSession();
-		Query query = session.createQuery("from Course as course");
-		List<Course> list = query.list();
+		Query query = session.createSQLQuery("select courseid,coursename,name,classroom,coursetime,studentnumber,cid from user,course where user.uid = course.teacher_uid");
+		List list = query.list();
 		model.addObject("courselist", list);
 		session.close();
 		return model;
@@ -47,14 +49,21 @@ public class AdminCourseController {
 	@RequestMapping(value="/addacourse",method=RequestMethod.POST)
 	public @ResponseBody String addCourse(@RequestParam(value="courseid")String courseid,@RequestParam(value="coursename")String coursename,@RequestParam(value="teachername")int teachername,
 			@RequestParam(value="classroom")String classroom,@RequestParam(value="coursetime")String coursetime){
+		
 		Course course = new Course();
+		//course.setCid(2);
 		course.setCourseid(courseid);
 		course.setCoursename(coursename);
-		course.setUid(teachername);
 		course.setClassroom(classroom);
 		course.setCoursetime(coursetime);
 		Session session = sessionFactory.openSession();
 		
+		Query query = session.createQuery("from User as user where user.uid=:uid");
+		query.setParameter("uid", teachername);
+		List<User> ls = query.list();
+		User us = ls.get(0);
+		
+		course.setTeacher(us);		
 		
 		Transaction tx = session.beginTransaction();
 		session.save(course);
@@ -87,7 +96,7 @@ public class AdminCourseController {
 		course.setCourseid(courseid);
 		course.setCoursename(coursename);
 		course.setCoursetime(coursetime);
-		course.setUid(teachername);
+		//course.setTeacher(teachername);
 		session.update(course);
 		tx.commit();
 		session.close();

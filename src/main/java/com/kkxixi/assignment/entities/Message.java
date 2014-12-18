@@ -23,11 +23,9 @@ public class Message {
 	private int mid;
 	
 	@ManyToOne(targetEntity = User.class , cascade = CascadeType.ALL)
-	@JoinColumn(name="sender")
 	private int sender;
 	
 	@ManyToOne(targetEntity = User.class , cascade = CascadeType.ALL)
-	@JoinColumn(name="receiver")
 	private int receiver;
 	
 	@Column(name="messagecontent")

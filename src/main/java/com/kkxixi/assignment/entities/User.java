@@ -1,12 +1,15 @@
 package com.kkxixi.assignment.entities;
 
 import java.sql.Timestamp;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -31,6 +34,9 @@ public class User {
 	
 	@Column(name="name")
 	private String name;
+	
+	@OneToMany(mappedBy="teacher",cascade = CascadeType.ALL)
+	private Set<Course> courses;
 	
 	public int getUid() {
 		return uid;
@@ -67,5 +73,11 @@ public class User {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public Set<Course> getCourses() {
+		return courses;
+	}
+	public void setCourses(Set<Course> courses) {
+		this.courses = courses;
 	}
 }

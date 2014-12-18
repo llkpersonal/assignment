@@ -104,6 +104,7 @@ public class AdminUserController {
 		}
 		User user = list.get(0);
 		user.setName(name);
+		user.setUsername(username);
 		user.setUid(uid);
 		user.setUsertype(usertype);
 		session.update(user);

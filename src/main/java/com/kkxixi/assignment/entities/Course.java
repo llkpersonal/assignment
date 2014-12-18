@@ -5,14 +5,13 @@ import java.sql.Timestamp;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name="course")
@@ -22,9 +21,9 @@ public class Course {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int cid;
 	
-	@ManyToOne(targetEntity = User.class , cascade = CascadeType.ALL)
-	@JoinColumn(name="uid")
-	private int uid;
+	@ManyToOne(targetEntity=User.class,cascade=CascadeType.ALL , optional = true , fetch = FetchType.LAZY)
+	@JoinColumn(name="teacher_uid")
+	private User teacher;
 	
 	@Column(name="classroom")
 	private String classroom;
@@ -50,14 +49,6 @@ public class Course {
 
 	public void setCid(int cid) {
 		this.cid = cid;
-	}
-
-	public int getUid() {
-		return uid;
-	}
-
-	public void setUid(int uid) {
-		this.uid = uid;
 	}
 
 	public String getClassroom() {
@@ -106,5 +97,13 @@ public class Course {
 
 	public void setCreatetime(Timestamp createtime) {
 		this.createtime = createtime;
+	}
+
+	public User getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(User teacher) {
+		this.teacher = teacher;
 	}
 }

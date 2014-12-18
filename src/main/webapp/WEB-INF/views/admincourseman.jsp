@@ -125,17 +125,17 @@ function submit_course_info(){
                           <!-- td class="aligncenter"><span class="center">
                             <input type="checkbox" />
                           </span></td--> 
-                            <td class="center">${course.courseid}</td>
-                            <td class="center">${course.coursename }</td>
-                            <td class="center">${course.teachername }</td>
-							<td class="center">${course.classroom }</td>
-							<td class="center">${course.coursetime }</td>
-							<td class="center">${course.studentnumber }</td>
+                            <td class="center">${course[0]}</td>
+                            <td class="center">${course[1] }</td>
+                            <td class="center">${course[2] }</td>
+							<td class="center">${course[3] }</td>
+							<td class="center">${course[4] }</td>
+							<td class="center">${course[5] }</td>
                             <td class="center">
 								
-								<a data-toggle="modal" onclick="getcourseinfo(${course.cid})" data-target="#modifyModal">修改</a>
+								<a data-toggle="modal" onclick="getcourseinfo(${course[6]})" data-target="#modifyModal">修改</a>
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<a data-toggle="modal" onclick="set_delete_id(${course.cid})" data-target="#deleteModal">删除</a></td>
+								<a data-toggle="modal" onclick="set_delete_id(${course[6]})" data-target="#deleteModal">删除</a></td>
                         
                         </tr>
                      </c:forEach>
