@@ -34,32 +34,33 @@ function display_message(mid){
 		url : "getmsginfo?mid="+mid,
 		dataType:"json",
 		success: function(data){
-			jQuery("#msgtime").text(1900+data["sendtime"]["year"]+"/"+(1+data["sendtime"]["month"])+"/"+data["sendtime"]["date"]);
-			jQuery("#msguser").text(data["sender"]);
-			jQuery("#msgsender").text(data["sender"]);
-			jQuery("#msgreceiver").text(data["receiver"]);
-			jQuery("#msgcontent").text(data["messagecontent"]);
+			jQuery("#msgtime").text(1900+data[2]["year"]+"/"+(1+data[2]["month"])+"/"+data[2]["date"]);
+			jQuery("#msguser").text(data[5]);
+			jQuery("#msgsender").text(data[4]);
+			jQuery("#msgreceiver").text(data[3]);
+			jQuery("#msgcontent").text(data[1]);
 		}
 	});
 }
 
 jQuery(document).ready(function(){
 	jQuery("#btn_send").click(function(){
-		var receiver = jQuery("#receiver").val(), messagecontent = jQuery("#messagecontent").val();
-		alert(receiver+messagecontent);
+		var receivername = jQuery("#receivername").val(), messagecontent = jQuery("#messagecontent").val();
+		//alert(receiver+messagecontent);
 		jQuery.ajax({
 			type : "POST",
 			url : "sendamessage",
 			dataType : "json",
 			
 			data : {
-				"receiver" : receiver,
+				"receivername" : receivername,
 				"messagecontent" : messagecontent,
 			},
 			success : function(data) {
 				if (data["status"] == "failed") {
-					alert("添加失败，请检查是否有重复的课程号！");
+					alert("发送失败！");
 				} else {
+					alert("发送成功！");
 					location.href = "showadminmessagebox";
 				}
 			}
@@ -122,71 +123,19 @@ jQuery(document).ready(function(){
                                 <input type="text" class="input-block-level" placeholder="Search message and hit enter..." />
                             </form>
                             <ul class="msglist">
+                            
+                            
                             <c:forEach items="${messagelist}" var="message">
-                                <li class="unread" onclick="display_message(${message.mid})">
+                                <li class="unread" onclick="display_message(${message[0]})">
                                    <div class="thumb"><img src="images/photos/1.jpg" alt="" /></div>
                                     <div class="summary">
-                                    <span class="date pull-right"><small>${message.sendtime}</small></span>
-                                    <h4>${message.sender}</h4>
-                                     <p><strong>${message.messagecontent}</strong></p>
+                                    <span class="date pull-right"><small>${message[4]}</small></span>
+                                    <h4>${message[2]}</h4>
+                                     <p><strong>${message[1]}</strong></p>
                                 </li>
                             </c:forEach>
-                               <!--  <li class="unread">
-                                    <div class="thumb"><img src="images/photos/1.jpg" alt="" /></div>
-                                    <div class="summary">
-                                        <span class="date pull-right"><small>April 03, 2013</small></span>
-                                        <h4>Leevanjo Sarce</h4>
-                                        <p><strong>Lorem ipsum dol..</strong> - Hey, leevanjo doloe..</p>
-                                    </div>
-                                </li>
-                                <li class="unread">
-                                    <div class="thumb"><img src="images/photos/1.jpg" alt="" /></div>
-                                    <div class="summary">
-                                        <span class="date pull-right"><small>April 03, 2013</small></span>
-                                        <h4>Yanmar Iobi</h4>
-                                        <p><strong>Lorem ipsum dol..</strong> - Hey, leevanjo doloe..</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="thumb"><img src="images/photos/1.jpg" alt="" /></div>
-                                    <div class="summary">
-                                        <span class="date pull-right"><small>April 03, 2013</small></span>
-                                        <h4>Nusjan Wanlacal</h4>
-                                        <p><strong>Lorem ipsum dol..</strong> - Hey, leevanjo doloe..</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="thumb"><img src="images/photos/1.jpg" alt="" /></div>
-                                    <div class="summary">
-                                        <span class="date pull-right"><small>April 03, 2013</small></span>
-                                        <h4>Zaham Sindilmaca</h4>
-                                        <p><strong>Lorem ipsum dol..</strong> - Hey, leevanjo doloe..</p>
-                                    </div>
-                                </li>
-                                <li class="unread">
-                                    <div class="thumb"><img src="images/photos/1.jpg" alt="" /></div>
-                                    <div class="summary">
-                                        <span class="date pull-right"><small>April 03, 2013</small></span>
-                                        <h4>Weno Carasbong</h4>
-                                        <p><strong>Lorem ipsum dol..</strong> - Hey, leevanjo doloe..</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="thumb"><img src="images/photos/1.jpg" alt="" /></div>
-                                    <div class="summary">
-                                        <span class="date pull-right"><small>April 03, 2013</small></span>
-                                        <h4>Ratesoc Maitum</h4>
-                                        <p><strong>Lorem ipsum dol..</strong> - Hey, leevanjo doloe..</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="thumb"><img src="images/photos/1.jpg" alt="" /></div>
-                                    <div class="summary">
-                                        <span class="date pull-right"><small>April 03, 2013</small></span>
-                                        <h4>Venro Leongal</h4>
-                                        <p><strong>Lorem ipsum dol..</strong> - Hey, leevanjo doloe..</p>
-                                    </div>
-                                </li>-->
+                            
+                            
                             </ul>
                         </div><!--messageleft-->
                         <div class="messageright">
@@ -214,11 +163,6 @@ jQuery(document).ready(function(){
                                     <p id="msgcontent">消息系统启用了！</p>
                                 </div><!--msgbody-->
                                 
-                                
-                                
-                               
-                                
-                               
                             </div><!--messageview-->
                             
                             <div class="msgreply">
@@ -260,7 +204,7 @@ jQuery(document).ready(function(){
     <div class="modal-body">
         <p>
                         	<label>收件人</label>
-                            <span class="field"><input id="receiver" type="text" name="receiver" class="input-xlarge" /></span>
+                            <span class="field"><input id=receivername type="text" name="receivername" class="input-xlarge" /></span>
                         </p>
                        
                         <p>
