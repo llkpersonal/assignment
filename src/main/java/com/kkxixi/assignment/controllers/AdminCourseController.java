@@ -42,7 +42,16 @@ public class AdminCourseController {
 	@RequestMapping(value="/adminaddcourse")
 	public ModelAndView adminAddCourse(){
 		ModelAndView model = new ModelAndView();
+		Session session = sessionFactory.openSession();
+		
+		Query query = session.createQuery("from User as user where user.usertype='teacher'");
+		
+		List ls = query.list();
+		
+		model.addObject("teacherlist",ls);
+		
 		model.setViewName("adminaddcourse");
+		session.close();
 		return model;
 	}
 	
