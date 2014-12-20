@@ -21,6 +21,8 @@ function login() {
 						location.href = "adminhomepage";
 					} else if( data["type"]=="teacher") {
 						location.href = "teacherindex"
+					} else if( data["type"]=="student") {
+						location.href = "stuhomepage"
 					}
 				}
 			}

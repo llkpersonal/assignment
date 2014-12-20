@@ -2,13 +2,14 @@
     pageEncoding="UTF-8"%>
 <%@ page isELIgnored="false"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:import url="adminheader.jsp">
-	<c:param name="title" value="作业管理系统/首页" />
+<c:import url="stuheader.jsp">
+	<c:param name="title" value="学生主页" />
 </c:import>
+    
     <div class="rightpanel">
         
         <ul class="breadcrumbs">
-            <li><a href="homepage.html"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
+            <li><a href="stuhomepage.html"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
             <li>主页</li>
             <li class="right">
                     <a href="" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-tint"></i> 皮肤</a>
@@ -31,71 +32,81 @@
             <div class="pageicon"><span class="iconfa-laptop"></span></div>
             <div class="pagetitle">
                 <h5>所有功能的入口</h5>
-                <h1>管理员主页</h1>
+                <h1>学生主页</h1>
             </div>
         </div><!--pageheader-->
         
          <div class="maincontent">
             <div class="maincontentinner">
             
-             <div class="row-fluid">
-                    <div id="dashboard-left" class="span8">
-                        
-                        <h5 class="subtitle">操作</h5>
-                        <ul class="shortcuts">
-                            <li class="events">
-                                <a href="adminusermanage">
-                                    <span class="shortcuts-icon iconsi-user"></span>
-                                    <span class="shortcuts-label">用户管理</span>
-                                </a>
-                            </li>
-                            <li class="products">
-                                <a href="admincourseman.html">
-                                    <span class="shortcuts-icon iconsi-archive"></span>
-                                    <span class="shortcuts-label">课程管理</span>
-                                </a>
-                            </li>
-                           
-                            <li class="help">
-                                <a href="showadminmessagebox">
-                                    <span class="shortcuts-icon iconsi-message"></span>
-                                    <span class="shortcuts-label">申诉处理</span>
-                                </a>
-                            </li>
-                            <li class="last images">
-                                <a href="admincalendar.html">
-                                    <span class="shortcuts-icon iconsi-event"></span>
-                                    <span class="shortcuts-label">日历</span>
-                                </a>
-                            </li>
-                        </ul>
-                        
-                        
-                        <br />
-                        
-                       
-                        
-                    </div><!--span8-->
-                    
-                    <div id="dashboard-right" class="span4">
-                        
-                        <h5 class="subtitle">通知</h5>
-                        
+            <div class="row-fluid">
+                
+                <div class="span9">
+                    <h3 class="subtitle2">选择课程</h3>
+                    <br />
+                    <table class="table discussions">
+                        <colgroup>
+                            <col class="width45" />
+                            <col class="width15" />
+                            <col class="width10" />
+                            <col class="width20" />
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>课程名</th>
+                                <th>上课地点</th>
+                                <th>授课老师</th>
+                                <th>上课时间</th>    
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a id="topic" href="stushowassign.html" data-placement="top" data-toggle="tooltip" data-original-title="Click me to view topic page">综合实践</a></td>
+                                <td><a href="">逸夫601</a></td>
+                                <td>罗夕</td>
+                                <td>星期五 14:10~18:10</td>
+                            </tr>
+                            <tr>
+                                <td><a href="stushowassign.html">操作系统</a></td>
+                                <td><a href="">逸夫106</a></td>
+                                <td>罗夕</td>
+                                <td>星期二 10:10~12:00</td>
+                            </tr>
+                            <tr>
+                                <td><a href="stushowassign.html">离散数学</a></td>
+                                <td><a href="">逸夫104</a></td>
+                                <td>罗夕</td>
+                                <td>星期四 10:10~12:00</td>
+                            </tr>
+                            <tr>
+                                <td><a href="stushowassign.html">算法</a></td>
+                                <td><a href="">逸夫208</a></td>
+                                <td>罗夕</td>
+                                <td>星期二 14:10~16:00</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                            
+                        <br /><br />
+                            
+                     
+                </div><!--span9-->
+                
+                <div class="span3">
+                    <div class="alert">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <h4>通知</h4>
                         <div class="divider15"></div>
-                        
-                        <div class="alert alert-block">
-                              <button data-dismiss="alert" class="close" type="button">&times;</button>
-                              <h4>通知</h4>
-                              <p style="margin: 8px 0">啦啦啦啦啦啦啦啦  管理员课进行用户管理，课程管理，权限管理啦啦啦啦啦</p>
-                        </div><!--alert-->
-                        
-                        <br />
-                        
-                       
-                                                
-                    </div><!--span4-->
-                </div><!--row-fluid-->
-                <div class="footer">
+                        <p>要写作业呀呀呀呀</p>
+                    </div>
+                    
+                    <br />
+                         
+                               
+                </div><!--span3-->
+                
+            </div><!--row-fluid-->
+				<div class="footer">
                     <div class="footer-left">
                         <span>&copy; 2014. 牛A昆昆. All Rights Reserved.</span>
                     </div>
@@ -185,4 +196,3 @@
 </script>
 </body>
 </html>
-                
