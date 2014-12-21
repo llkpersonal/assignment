@@ -5,7 +5,69 @@
 <c:import url="stuheader.jsp">
 	<c:param name="title" value="申诉处理/发件箱" />
 </c:import>
-    
+<script type="text/javascript">
+jQuery(document).ready(function(){
+    jQuery('.msglist li').click(function(){
+        jQuery('.msglist li').each(function(){ jQuery(this).removeClass('selected')});
+        jQuery(this).addClass('selected');
+        
+        // for mobile
+        jQuery('.msglist').click(function(){
+            if(jQuery(window).width() < 480) {
+                jQuery('.messageright, .messagemenu .back').show();
+                jQuery('.messageleft').hide();
+            }
+        });
+        
+        jQuery('.messagemenu .back').click(function(){
+            if(jQuery(window).width() < 480) {
+                jQuery('.messageright, .messagemenu .back').hide();
+                jQuery('.messageleft').show();
+            }
+        });
+    });
+});
+
+function display_message(mid){
+	jQuery.ajax({
+		type:"GET",
+		url : "getstumsginfo?mid="+mid,
+		dataType:"json",
+		success: function(data){
+			jQuery("#msgtime").text(1900+data[2]["year"]+"/"+(1+data[2]["month"])+"/"+data[2]["date"]);
+			jQuery("#msguser").text(data[6]);
+			jQuery("#msgreceiver").text(data[3]);
+			jQuery("#msgsender").text(data[4]);
+			jQuery("#msgcontent").text(data[1]);
+		}
+	});
+}
+
+jQuery(document).ready(function(){
+	jQuery("#btn_send").click(function(){
+		var receivername = jQuery("#receivername").val(), messagecontent = jQuery("#messagecontent").val();
+		//alert(receiver+messagecontent);
+		jQuery.ajax({
+			type : "POST",
+			url : "stusendamessage",
+			dataType : "json",
+			
+			data : {
+				"receivername" : receivername,
+				"messagecontent" : messagecontent,
+			},
+			success : function(data) {
+				if (data["status"] == "failed") {
+					alert("发送失败！");
+				} else {
+					alert("发送成功！");
+					location.href = "stusendmail";
+				}
+			}
+		});
+	});
+});
+</script>
     <div class="rightpanel">
         
         <ul class="breadcrumbs">
@@ -49,8 +111,8 @@
                     <div class="messagemenu">
                         <ul>
                             <li class="back"><a><span class="iconfa-chevron-left"></span> Back</a></li>
-                            <li ><a href="appealman.html"><span class="iconfa-inbox"></span> 收件箱</a></li>
-                            <li class="active"><a href="sendmail.html"><span class="iconfa-plane"></span> 发件箱</a></li>
+                            <li ><a href="stuappealman.html"><span class="iconfa-inbox"></span> 收件箱</a></li>
+                            <li class="active"><a href="stusendmail.html"><span class="iconfa-plane"></span> 发件箱</a></li>
                            	
 							
                         </ul>
@@ -61,63 +123,16 @@
                                 <input type="text" class="input-block-level" placeholder="Search message and hit enter..." />
                             </form>
                             <ul class="msglist">
+                                <c:forEach items="${messagelist}" var="message">
+                                <li class="unread" onclick="display_message(${message[0]})">
+                                   <div class="thumb"><img src="images/photos/1.jpg" alt="" /></div>
+                                    <div class="summary">
+                                    <span class="date pull-right"><small>${message[4]}</small></span>
+                                    <h4>${message[2]}</h4>
+                                     <p><strong>${message[1]}</strong></p>
+                                </li>
+                            </c:forEach>
                                 
-                                <li class="unread">
-                                    <div class="thumb"><img src="images/photos/1.jpg" alt="" /></div>
-                                    <div class="summary">
-                                        <span class="date pull-right"><small>April 03, 2013</small></span>
-                                        <h4>Leevanjo Sarce</h4>
-                                        <p><strong>Lorem ipsum dol..</strong> - Hey, leevanjo doloe..</p>
-                                    </div>
-                                </li>
-                                <li class="unread">
-                                    <div class="thumb"><img src="images/photos/1.jpg" alt="" /></div>
-                                    <div class="summary">
-                                        <span class="date pull-right"><small>April 03, 2013</small></span>
-                                        <h4>Yanmar Iobi</h4>
-                                        <p><strong>Lorem ipsum dol..</strong> - Hey, leevanjo doloe..</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="thumb"><img src="images/photos/1.jpg" alt="" /></div>
-                                    <div class="summary">
-                                        <span class="date pull-right"><small>April 03, 2013</small></span>
-                                        <h4>Nusjan Wanlacal</h4>
-                                        <p><strong>Lorem ipsum dol..</strong> - Hey, leevanjo doloe..</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="thumb"><img src="images/photos/1.jpg" alt="" /></div>
-                                    <div class="summary">
-                                        <span class="date pull-right"><small>April 03, 2013</small></span>
-                                        <h4>Zaham Sindilmaca</h4>
-                                        <p><strong>Lorem ipsum dol..</strong> - Hey, leevanjo doloe..</p>
-                                    </div>
-                                </li>
-                                <li class="unread">
-                                    <div class="thumb"><img src="images/photos/1.jpg" alt="" /></div>
-                                    <div class="summary">
-                                        <span class="date pull-right"><small>April 03, 2013</small></span>
-                                        <h4>Weno Carasbong</h4>
-                                        <p><strong>Lorem ipsum dol..</strong> - Hey, leevanjo doloe..</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="thumb"><img src="images/photos/1.jpg" alt="" /></div>
-                                    <div class="summary">
-                                        <span class="date pull-right"><small>April 03, 2013</small></span>
-                                        <h4>Ratesoc Maitum</h4>
-                                        <p><strong>Lorem ipsum dol..</strong> - Hey, leevanjo doloe..</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="thumb"><img src="images/photos/1.jpg" alt="" /></div>
-                                    <div class="summary">
-                                        <span class="date pull-right"><small>April 03, 2013</small></span>
-                                        <h4>Venro Leongal</h4>
-                                        <p><strong>Lorem ipsum dol..</strong> - Hey, leevanjo doloe..</p>
-                                    </div>
-                                </li>
                             </ul>
                         </div><!--messageleft-->
                         <div class="messageright">
@@ -130,30 +145,20 @@
                                       
                                     </ul>
                                 </div>
-                                
-                                <h1 class="subject">Lorem ipsum dolor sit amet, consectetur adipisicing elit</h1>
+                                  
+                                <h1 class="subject">Message</h1>
                                 <div class="msgauthor">
                                     <div class="thumb"><img src="images/photos/1.jpg" alt="" /></div>
                                     <div class="authorinfo">
-                                        <span class="date pull-right">April 03, 2012</span>
-                                        <h5><strong>Leevanjo Sarce</strong> <span>hisemail@hisdomain.com</span></h5>
-                                        <span class="to">to me@mydomain.com</span>
+                                        <span class="date pull-right" id="msgtime">Nov. 25th,2014</span>
+                                        <h5><strong id="msguser">公告</strong> <span id="msgreceiver">llkpersonal</span></h5>
+                                        <span class="to" id="msgsender">me</span>
                                     </div><!--authorinfo-->
                                 </div><!--msgauthor-->
                                 <div class="msgbody">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas</p>
-                                    
-                                    <p>It aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
-                                    
-                                    <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
-                                    <p>Regards, <br />Leevanjo</p>
+                                    <p id="msgcontent">消息系统启用了！</p>
                                 </div><!--msgbody-->
-                                
-                                
-                              
-                                
-                               
+     
                             </div><!--messageview-->
                             
                             
@@ -184,17 +189,17 @@
     <div class="modal-body">
         <p>
                         	<label>收件人</label>
-                            <span class="field"><input type="text" name="input4" class="input-xlarge" /></span>
+                            <span class="field"><input id="receivername" type="text" name="receivername" class="input-xlarge" /></span>
                         </p>
                        
                         <p>
                             <label>回复内容</label>
-                            <span class="field"><textarea cols="80" rows="5" class="span5"></textarea></span> 
+                            <span class="field"><textarea id="messagecontent" name="messagecontent" cols="80" rows="5" class="span5"></textarea></span> 
                         </p>
     </div>
     <div class="modal-footer">
         <button data-dismiss="modal" class="btn">关闭</button>
-        <button class="btn btn-primary">发送</button>
+        <button id="btn_send" class="btn btn-primary">发送</button>
     </div>
 </div><!--#编辑框-->
 </body>
