@@ -131,7 +131,7 @@
                             <ul>
                                 <li><a href="">学生</a></li>
                                 <li><a href="stupersoninfo.html">修改资料</a></li>
-                                <li><a href="index.html">注销</a></li>
+                                <li><a href="logout">注销</a></li>
                             </ul>
                         </div>
                     </div>
