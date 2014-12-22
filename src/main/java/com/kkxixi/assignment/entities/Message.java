@@ -23,11 +23,11 @@ public class Message {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int mid;
 	
-	@ManyToOne(targetEntity=User.class,cascade=CascadeType.ALL , optional = true , fetch = FetchType.LAZY)
+	@ManyToOne(targetEntity=User.class,cascade=CascadeType.ALL , optional = true)
 	@JoinColumn(name="sender_uid")
 	private User sender;
 	
-	@ManyToOne(targetEntity=User.class,cascade=CascadeType.ALL , optional = true , fetch = FetchType.LAZY)
+	@ManyToOne(targetEntity=User.class,cascade=CascadeType.ALL , optional = true)
 	@JoinColumn(name="receiver_uid")
 	private User receiver;
 	

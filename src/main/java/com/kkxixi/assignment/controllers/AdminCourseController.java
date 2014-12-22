@@ -88,8 +88,9 @@ public class AdminCourseController {
 		query.setString("cid", Integer.toString(cid));
 		List<Course> list = query.list();
 		session.close();
-		JSONObject json = JSONObject.fromObject(list.get(0));
-		return json.toString();
+		Course course = list.get(0);
+		int uid = course.getTeacher().getUid();
+		return "{\"courseid\":\""+course.getCourseid()+"\",\"teachername\":\""+Integer.toString(uid)+"\",\"coursetime\":\""+course.getCoursetime()+"\",\"coursename\":\""+course.getCoursename()+"\",\"classroom\":\""+course.getClassroom()+"\"}";
 	}
 	
 	@RequestMapping(value="/modifycourse",method=RequestMethod.POST)

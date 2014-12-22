@@ -21,7 +21,7 @@ public class Course {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int cid;
 	
-	@ManyToOne(targetEntity=User.class,cascade=CascadeType.ALL , optional = true , fetch = FetchType.LAZY)
+	@ManyToOne(targetEntity=User.class,cascade=CascadeType.ALL , optional = true)
 	@JoinColumn(name="teacher_uid")
 	private User teacher;
 	
