@@ -1,15 +1,12 @@
 package com.kkxixi.assignment.controllers;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -23,21 +20,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.kkxixi.assignment.entities.Course;
 import com.kkxixi.assignment.entities.Message;
 import com.kkxixi.assignment.entities.User;
 
 @Controller
-public class AdminMessageBox {
+public class StuMessageBox {
 	
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	@RequestMapping(value="/showadminmessagebox")
-	public ModelAndView showAdminMessageBox(
-	        HttpServletRequest request) throws UnsupportedEncodingException{
+	@RequestMapping(value="/stuappealman")
+	public ModelAndView stuShowAssign(
+			HttpServletRequest request) throws UnsupportedEncodingException{
 		ModelAndView model = new ModelAndView();
-		model.setViewName("adminappealman");
+		model.setViewName("stuappealman");
 		Cookie [] cookies = request.getCookies();
 		for(int i=0;i<cookies.length;i++)
 		{
@@ -55,16 +51,14 @@ public class AdminMessageBox {
 				
 			}
 		}
-		
-		
 		return model;
 	}
 	
-	@RequestMapping(value="/showadminsendmailbox")
-	public ModelAndView showAdminSendMailBox(
-	        HttpServletRequest request) throws UnsupportedEncodingException{
+	@RequestMapping(value="/stusendmail")
+	public ModelAndView stuShowDescassign(
+			 HttpServletRequest request) throws UnsupportedEncodingException{
 		ModelAndView model = new ModelAndView();
-		model.setViewName("adminsendbox");
+		model.setViewName("stusendmail");
 		Cookie [] cookies = request.getCookies();
 		for(int i=0;i<cookies.length;i++)
 		{
@@ -85,9 +79,8 @@ public class AdminMessageBox {
 		return model;
 	}
 	
-	
-	@RequestMapping(value="/sendamessage",method=RequestMethod.POST)
-	public @ResponseBody String sendmessage(@RequestParam(value="receivername")String receivername,@RequestParam(value="messagecontent")String messagecontent,
+	@RequestMapping(value="/stusendamessage",method=RequestMethod.POST)
+	public @ResponseBody String stusendmessage(@RequestParam(value="receivername")String receivername,@RequestParam(value="messagecontent")String messagecontent,
 			HttpServletRequest request) throws UnsupportedEncodingException{
 		Message message = new Message();
 		message.setMessagecontent(messagecontent);
@@ -122,7 +115,7 @@ public class AdminMessageBox {
 		return "{\"status\":\"ok\"}";
 	}
 	
-	@RequestMapping(value="/getmsginfo",produces = "text/html;charset=UTF-8")
+	@RequestMapping(value="/getstumsginfo",produces = "text/html;charset=UTF-8")
 	public @ResponseBody String getmsginfo(@RequestParam("mid")int mid){
 		Session session = sessionFactory.openSession();
 		Query query = session.createSQLQuery("select mid,messagecontent,sendtime,name as receiver,sender,sendername,username as receivername from (select mid,messagecontent,sendtime,username as sendername,name as sender,receiver_uid from user uo,message where message.mid = :mid  and sender_uid=uo.uid)t,user ut where ut.uid=t.receiver_uid;");
@@ -135,4 +128,5 @@ public class AdminMessageBox {
 		session.close();
 		return json.toString();
 	}
+	
 }

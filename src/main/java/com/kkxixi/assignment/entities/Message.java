@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,11 +23,13 @@ public class Message {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int mid;
 	
-	@ManyToOne(targetEntity = User.class , cascade = CascadeType.ALL)
-	private int sender;
+	@ManyToOne(targetEntity=User.class,cascade=CascadeType.ALL , optional = true)
+	@JoinColumn(name="sender_uid")
+	private User sender;
 	
-	@ManyToOne(targetEntity = User.class , cascade = CascadeType.ALL)
-	private int receiver;
+	@ManyToOne(targetEntity=User.class,cascade=CascadeType.ALL , optional = true)
+	@JoinColumn(name="receiver_uid")
+	private User receiver;
 	
 	@Column(name="messagecontent")
 	private String messagecontent;
@@ -42,21 +45,7 @@ public class Message {
 		this.mid = mid;
 	}
 
-	public int getSender() {
-		return sender;
-	}
-
-	public void setSender(int sender) {
-		this.sender = sender;
-	}
-
-	public int getReceiver() {
-		return receiver;
-	}
-
-	public void setReceiver(int receiver) {
-		this.receiver = receiver;
-	}
+	
 
 	public String getMessagecontent() {
 		return messagecontent;
@@ -72,5 +61,21 @@ public class Message {
 
 	public void setSendtime(Timestamp sendtime) {
 		this.sendtime = sendtime;
+	}
+
+	public User getSender() {
+		return sender;
+	}
+
+	public void setSender(User sender) {
+		this.sender = sender;
+	}
+
+	public User getReceiver() {
+		return receiver;
+	}
+
+	public void setReceiver(User receiver) {
+		this.receiver = receiver;
 	}
 }

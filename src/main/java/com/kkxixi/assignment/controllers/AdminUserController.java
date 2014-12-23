@@ -82,6 +82,7 @@ public class AdminUserController {
 		List<User>  list = query.list();
 		User user = list.get(0);
 		user.setPassword("");
+		user.setCourses(null);
 		JSONObject json = JSONObject.fromObject(user);
 		return json.toString();
 	}
