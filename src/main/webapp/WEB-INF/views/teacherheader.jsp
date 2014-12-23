@@ -1,9 +1,6 @@
-
-<%@ page isELIgnored="false"%>
 <%@page import="java.net.URLDecoder" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,6 +45,38 @@
 <script type="text/javascript" src="js/forms.js"></script>	
 <script type="text/javascript" src="js/md5.js"></script>	
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/excanvas.min.js"></script><![endif]-->
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+        // dynamic table
+        jQuery('#dyntable').dataTable({
+            "sPaginationType": "full_numbers",
+            "aaSortingFixed": [[0,'asc']],
+            "fnDrawCallback": function(oSettings) {
+                jQuery.uniform.update();
+            }
+        });
+        
+        jQuery('#dyntable2').dataTable( {
+            "bScrollInfinite": true,
+            "bScrollCollapse": true,
+            "sScrollY": "300px"
+        });
+        
+    });
+	
+</script>
+<script type="text/javascript">
+	$('.form_datetime').datetimepicker({
+        //language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		forceParse: 0,
+        showMeridian: 1
+    });
+	</script>
 <script type="text/javascript">
     jQuery(document).ready(function(){
         // dynamic table
@@ -178,10 +207,46 @@
             <ul class="nav nav-tabs nav-stacked">
             	<li class="nav-header">导航</li>
                 <li <%if(uri.indexOf("teacherhomepage")!=-1) out.print("class=\"active\""); %>><a href="teacherhomepage"><span class="iconfa-laptop"></span> 主页</a></li>
-                 
+                 <li class="dropdown <%
+                 if(uri.indexOf("teachergiveassign")!=-1||
+                		 uri.indexOf("teachershowassign")!=-1||uri.indexOf("teachercheckassign")!=-1||
+                		 uri.indexOf("teachercheckdescassign")!=-1||uri.indexOf("teachercheckperassign")!=-1||
+                		 uri.indexOf("teachercodeassign")!=-1||
+                         uri.indexOf("teachercodedescassign")!=-1||uri.indexOf("teachercodeperassign")!=-1||
+                         uri.indexOf("teachergivecodeassign")!=-1||uri.indexOf("teachershowcodeassign")!=-1||
+                         uri.indexOf("teachershowtestcase")!=-1||uri.indexOf("teacheraddtestcase")!=-1
+                		 ) {
+                	 out.print("active"); 
+                 }
+                		 %>"><a href=""><span class="iconfa-pencil"></span> 作业管理</a>
+                	<ul <%
+                	 if(uri.indexOf("teachergiveassign")!=-1||
+                		 uri.indexOf("teachershowassign")!=-1||uri.indexOf("teachercheckassign")!=-1||
+                		 uri.indexOf("teachercheckdescassign")!=-1||uri.indexOf("teachercheckperassign")!=-1||
+                		 uri.indexOf("teachercodeassign")!=-1||
+                         uri.indexOf("teachercodedescassign")!=-1||uri.indexOf("teachercodeperassign")!=-1||
+                         uri.indexOf("teachergivecodeassign")!=-1||uri.indexOf("teachershowcodeassign")!=-1||
+                         uri.indexOf("teachershowtestcase")!=-1||uri.indexOf("teacheraddtestcase")!=-1
+                		 ) {
+                	 out.print("style=\"display: block\""); 
+                 }
+                		 %>>
+                    	<li <%if(uri.indexOf("teachergiveassign")!=-1) out.print("class=\"active\""); %>><a href="teachergiveassign.html?cid=${cid}">布置作业</a></li>
+						<li <%if(uri.indexOf("teachershowassign")!=-1) out.print("class=\"active\""); %>><a href="teachershowassign.html?cid=${cid}">查看作业</a></li>
+                        <li <%if(uri.indexOf("teachercheckassign")!=-1||uri.indexOf("teachercheckdescassign")!=-1||uri.indexOf("teachercheckperassign")!=-1) out.print("class=\"active\""); %>><a href="teachercheckassign.html?cid=${cid}">批改作业</a></li>
+                        <li <%if(uri.indexOf("teachercodeassign")!=-1||
+                        uri.indexOf("teachercodedescassign")!=-1||uri.indexOf("teachercodeperassign")!=-1||
+                        uri.indexOf("teachergivecodeassign")!=-1||uri.indexOf("teachershowcodeassign")!=-1||
+                        uri.indexOf("teachershowtestcase")!=-1||uri.indexOf("teacheraddtestcase")!=-1) 
+                        	out.print("class=\"active\""); %>><a href="teachercodeassign.html?cid=${cid}">编程作业</a></li>
+                    </ul>
+                </li>
+				<li <%if(uri.indexOf("teachergrademan")!=-1||uri.indexOf("teachergradedesc")!=-1) out.print("class=\"active\""); %>><a href="teachergrademan?cid=${cid}"><span class="iconfa-hand-up"></span> 课程管理</a></li>
+				
+                
                 <li <%if(uri.indexOf("teacherappealman")!=-1||uri.indexOf("teachersendbox")!=-1) out.print("class=\"active\""); %>><a href="teacherappealman"><span class="iconfa-envelope"></span> 申诉处理</a></li>
                 <li <%if(uri.indexOf("teachercalender")!=-1) out.print("class=\"active\""); %>><a href="teachercalender"><span class="iconfa-calendar"></span> 日历</a></li>
-				
+				<li <%if(uri.indexOf("teachersatistic")!=-1) out.print("class=\"active\""); %>><a href="teachersatistic"><span class="iconfa-calendar"></span> 统计</a></li>
                 
              
              
@@ -189,179 +254,3 @@
         </div><!--leftmenu-->
         
     </div><!-- leftpanel -->
-    <div class="rightpanel">
-        
-        <ul class="breadcrumbs">
-            <li><a href="teacherhomepage.html"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
-            <li>主页</li>
-            <li class="right">
-                    <a href="" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-tint"></i> 皮肤</a>
-                    <ul class="dropdown-menu pull-right skin-color">
-                        <li><a href="default">Default</a></li>
-                        <li><a href="navyblue">Navy Blue</a></li>
-                        <li><a href="palegreen">Pale Green</a></li>
-                        <li><a href="red">Red</a></li>
-                        <li><a href="green">Green</a></li>
-                        <li><a href="brown">Brown</a></li>
-						<li><a href="lightred">Lightred</a></li>
-                    </ul>
-            </li>
-        </ul>
-        
-        <div class="pageheader">
-            <form action="results.html" method="post" class="searchbar">
-                <input type="text" name="keyword" placeholder="To search type and hit enter..." />
-            </form>
-            <div class="pageicon"><span class="iconfa-laptop"></span></div>
-            <div class="pagetitle">
-                <h5>所有功能的入口</h5>
-                <h1>教师主页</h1>
-            </div>
-        </div><!--pageheader-->
-        
-         <div class="maincontent">
-            <div class="maincontentinner">
-            
-            <div class="row-fluid">
-                
-                <div class="span9">
-                    <h3 class="subtitle2">选择课程</h3>
-                    <br />
-                    <table class="table discussions">
-                        <colgroup>
-                            <col class="width45" />
-                            <col class="width15" />
-                            <col class="width10" />
-                            <col class="width20" />
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th>课程名</th>
-                                <th>授课地点</th>
-                                <th>学生人数</th>
-                                <th>上课时间</th>    
-                            </tr>
-                        </thead>
-                        <tbody>
-                        
-                     		<c:forEach items="${courselist}" var="course">
-                     			<tr>
-                                <td><a id="topic" href="teachergiveassign.html?cid=${course[4]}" data-placement="top" data-toggle="tooltip" data-original-title="Click me to view topic page">${course[0] }</a></td>
-                                <td><a href="teachergiveassign.html?cid=${course[4]}">${course[1] }</a></td>
-                                <td>${course[2] }</td>
-                                <td>${course[3] }</td>
-                            </tr>
-                     		</c:forEach>
-                            
-                            </tbody>
-                        </table>
-                            
-                        <br /><br />
-                            
-                     
-                </div><!--span9-->
-                
-                <div class="span3">
-                    <div class="alert">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        <h4>通知</h4>
-                        <div class="divider15"></div>
-                        <p>布置作业.啦啦啦啦 好好听课呀呀呀呀呀呀呀</p>
-                    </div>
-                    
-                    <br />
-                         
-                               
-                </div><!--span3-->
-                
-            </div><!--row-fluid-->
-				<div class="footer">
-                    <div class="footer-left">
-                        <span>&copy; 2014. 牛A昆昆. All Rights Reserved.</span>
-                    </div>
-                    <div class="footer-right">
-                        <span>Designed by: <a href="http://kkxixi.com/">Christy</a></span>
-                    </div>
-                </div><!--footer-->
-            </div><!--maincontentinner-->
-        </div><!--maincontent-->
-        
-        
-    </div><!--rightpanel-->
-    
-</div><!--mainwrapper-->
-<script type="text/javascript">
-    jQuery(document).ready(function() {
-        
-      // simple chart
-		var flash = [[0, 11], [1, 9], [2,12], [3, 8], [4, 7], [5, 3], [6, 1]];
-		var html5 = [[0, 5], [1, 4], [2,4], [3, 1], [4, 9], [5, 10], [6, 13]];
-      var css3 = [[0, 6], [1, 1], [2,9], [3, 12], [4, 10], [5, 12], [6, 11]];
-			
-		function showTooltip(x, y, contents) {
-			jQuery('<div id="tooltip" class="tooltipflot">' + contents + '</div>').css( {
-				position: 'absolute',
-				display: 'none',
-				top: y + 5,
-				left: x + 5
-			}).appendTo("body").fadeIn(200);
-		}
-	
-			
-		var plot = jQuery.plot(jQuery("#chartplace"),
-			   [ { data: flash, label: "Flash(x)", color: "#6fad04"},
-              { data: html5, label: "HTML5(x)", color: "#06c"},
-              { data: css3, label: "CSS3", color: "#666"} ], {
-				   series: {
-					   lines: { show: true, fill: true, fillColor: { colors: [ { opacity: 0.05 }, { opacity: 0.15 } ] } },
-					   points: { show: true }
-				   },
-				   legend: { position: 'nw'},
-				   grid: { hoverable: true, clickable: true, borderColor: '#666', borderWidth: 2, labelMargin: 10 },
-				   yaxis: { min: 0, max: 15 }
-				 });
-		
-		var previousPoint = null;
-		jQuery("#chartplace").bind("plothover", function (event, pos, item) {
-			jQuery("#x").text(pos.x.toFixed(2));
-			jQuery("#y").text(pos.y.toFixed(2));
-			
-			if(item) {
-				if (previousPoint != item.dataIndex) {
-					previousPoint = item.dataIndex;
-						
-					jQuery("#tooltip").remove();
-					var x = item.datapoint[0].toFixed(2),
-					y = item.datapoint[1].toFixed(2);
-						
-					showTooltip(item.pageX, item.pageY,
-									item.series.label + " of " + x + " = " + y);
-				}
-			
-			} else {
-			   jQuery("#tooltip").remove();
-			   previousPoint = null;            
-			}
-		
-		});
-		
-		jQuery("#chartplace").bind("plotclick", function (event, pos, item) {
-			if (item) {
-				jQuery("#clickdata").text("You clicked point " + item.dataIndex + " in " + item.series.label + ".");
-				plot.highlight(item.series, item.datapoint);
-			}
-		});
-    
-        
-        //datepicker
-        jQuery('#datepicker').datepicker();
-        
-        // tabbed widget
-        jQuery('.tabbedwidget').tabs();
-        
-        
-    
-    });
-</script>
-</body>
-</html>

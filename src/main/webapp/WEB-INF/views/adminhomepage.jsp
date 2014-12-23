@@ -8,7 +8,7 @@
     <div class="rightpanel">
         
         <ul class="breadcrumbs">
-            <li><a href="homepage.html"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
+            <li><a href="adminhomepage.html"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
             <li>主页</li>
             <li class="right">
                     <a href="" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-tint"></i> 皮肤</a>
