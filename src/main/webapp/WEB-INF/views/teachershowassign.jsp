@@ -5,12 +5,76 @@
 <c:import url="teacherheader.jsp">
 	<c:param name="title" value="作业管理系统/查看作业" />
 </c:import>
+
+<script>
+var global_aid;
+function set_delete_id(aid){
+	global_aid = aid;
+}
+function commit_delete(){
+	aid = global_aid;
+	jQuery.ajax({
+		type : "GET",
+		url : "delaassign?aid="+aid,
+		dataType : "json",
+		success : function(data) {
+			
+			location.reload();
+			
+		}
+	});
+}
+
+function getassigninfo(aid){
+	global_aid = aid;
+	jQuery.ajax({
+		type : "GET",
+		url : "fetchaassign?aid="+aid,
+		dataType : "json",
+		success : function(data) {
+			jQuery("#assignhead").val(data["assignhead"]);
+			jQuery("#assigncontent").val(data["assigncontent"]);
+			jQuery("#start").val(data["start"]);
+			jQuery("#deadline").val(data["deadline"]);
+			jQuery("#assignhead1").text(data["assignhead"]);
+			jQuery("#assigncontent1").text(data["assigncontent"]);
+			jQuery("#start1").text(data["start"]);
+			jQuery("#deadline1").text(data["deadline"]);
+			
+		}
+	});
+}
+function submit_assign_info(){
+	var aid = global_aid;
+	var assignhead = jQuery("#assignhead").val(), assigncontent = jQuery("#assigncontent").val(), 
+	start=jQuery("#start").val(), deadline = jQuery("#deadline").val();
+	
+	jQuery.ajax({
+		type : "POST",
+		url : "modifyassign",
+		dataType:"json",
+		data:{
+			"aid" : aid,
+			"assignhead" : assignhead,
+			"assigncontent" : assigncontent,
+			"start" : start,
+			"deadline" : deadline
+		},
+		success: function(data){
+			location.reload();
+		}
+	});
+}
+
+</script>
+
+
 <div class="rightpanel">
         
          <ul class="breadcrumbs">
             <li><a href="teacherhomepage.html"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
-            <li><a href="teachergiveassign.html">作业管理</a> <span class="separator"></span></li>
-            <li><a href="teachershowassign.html">查看作业</a></li>
+            <li><a href="teachergiveassign.html?cid=${cid }">作业管理</a> <span class="separator"></span></li>
+            <li><a href="teachershowassign.html?cid=${cid }">查看作业</a></li>
             
             <li class="right">
                 <a href="" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-tint"></i>皮肤</a>
@@ -70,11 +134,11 @@
                             <td class="center">${assign[2] }</td>
                             <td class="center">${assign[3] }</td>
                             <td class="center">
-								<a data-toggle="modal" data-target="#seeModal">查看</a>
+								<a onclick="getassigninfo(${assign[4]})" data-toggle="modal" data-target="#seeModal">查看</a>
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<a data-toggle="modal" data-target="#modifyModal">修改</a>
+								<a onclick="getassigninfo(${assign[4]})" data-toggle="modal" data-target="#modifyModal">修改</a>
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<a data-toggle="modal" data-target="#deleteModal">删除</a></td>
+								<a onclick="set_delete_id(${assign[4]})" data-toggle="modal" data-target="#deleteModal">删除</a></td>
                         
                         </tr>
                     	</c:forEach>
@@ -111,27 +175,27 @@
                   
          <tr>
                             <td class="center">作业标题</td>
-                            <td class="center">第一次作业</td>
+                            <td class="center" id="assignhead1"></td>
                           
                         </tr>
 		  <tr>
                         
                             <td class="center">作业内容</td>
-                            <td class="center"><textarea cols="50" rows="5" class="span5" readonly>lala</textarea></td>
+                            <td class="center" id="assigncontent1"><textarea cols="50" rows="5" class="span5" readonly></textarea></td>
                           
                             
                         </tr>
 			  <tr>
                       
-                            <td class="center">截止日期</td>
-                            <td class="center">2014.12.10</td>
+                            <td class="center">起始时间</td>
+                            <td class="center" id="start1"></td>
                           
                             
                         </tr>
 			  <tr>
                        
                             <td class="center">截止时间</td>
-                            <td class="center">12:30</td>
+                            <td class="center" id="deadline1"></td>
                           
                             
                         </tr>
@@ -146,7 +210,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default myfont" data-dismiss="modal">关闭</button>
-        <button type="button" class="btn btn-primary myfont">确定</button>
+  
       </div>
     </div>
   </div>
@@ -164,25 +228,22 @@
        
                         <p>
                         	<label>作业标题</label>
-                            <span class="field"><input type="text" name="input4" class="input-xlarge" /></span>
+                            <span class="field"><input id="assignhead" type="text" name="input4" class="input-xlarge" /></span>
                         </p>
                        
                         <p>
                             <label>作业内容</label>
-                            <span class="field"><textarea cols="80" rows="5" class="span5"></textarea></span> 
+                            <span class="field"><textarea id="assigncontent" cols="80" rows="5" class="span5"></textarea></span> 
                         </p>
 			<div class="par">
-                            <label>截止日期</label>
-                            <span class="field"><input id="datepicker" type="text" name="date" class="input-small" />eg:2014.10.10</span>
+                            <label>起始时间</label>
+                            <span class="field"><input id="start" type="text" name="input4" class="input-xlarge" /></span>
 							
                         </div> 
                          
                         <div class="par">
                             <label>截止时间</label>
-                            <div class="input-append bootstrap-timepicker">
-				<input id="timepicker1" type="text" class="input-small" />
-				<span class="add-on"><i class="iconfa-time"></i></span>
-			    </div>
+                            <span class="field"><input id="deadline" type="text" name="input4" class="input-xlarge" /></span>
                         </div>
                                     
 			<div class="par">
@@ -205,7 +266,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default myfont" data-dismiss="modal">关闭</button>
-        <button type="button" class="btn btn-primary myfont">确定</button>
+        <button type="button" onclick="submit_assign_info()" class="btn btn-primary myfont">确定</button>
       </div>
     </div>
   </div>
@@ -223,7 +284,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default myfont" data-dismiss="modal">关闭</button>
-        <button type="button" class="btn btn-primary myfont">确定</button>
+        <button type="button" onclick="commit_delete()" class="btn btn-primary myfont">确定</button>
       </div>
     </div>
   </div>

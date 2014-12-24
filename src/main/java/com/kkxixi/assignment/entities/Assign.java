@@ -21,7 +21,7 @@ public class Assign{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int aid;
 	
-	@ManyToOne(targetEntity=Course.class,cascade=CascadeType.ALL , optional = true , fetch = FetchType.LAZY)
+	@ManyToOne(targetEntity=Course.class,cascade=CascadeType.ALL , optional = true )
 	@JoinColumn(name="cid")
 	private Course cid;
 	

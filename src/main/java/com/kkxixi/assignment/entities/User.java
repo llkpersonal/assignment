@@ -9,6 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -37,6 +40,10 @@ public class User {
 	
 	@OneToMany(mappedBy="teacher",cascade = CascadeType.ALL)
 	private Set<Course> courses;
+	
+	@ManyToMany
+	@JoinTable(name="study",joinColumns = {@JoinColumn(name="uid")},inverseJoinColumns = {@JoinColumn(name="cid")})
+	private Set<Course> studies;
 	
 	public int getUid() {
 		return uid;

@@ -77,26 +77,7 @@
         showMeridian: 1
     });
 	</script>
-<script type="text/javascript">
-    jQuery(document).ready(function(){
-        // dynamic table
-        jQuery('#dyntable').dataTable({
-            "sPaginationType": "full_numbers",
-            "aaSortingFixed": [[0,'asc']],
-            "fnDrawCallback": function(oSettings) {
-                jQuery.uniform.update();
-            }
-        });
-        
-        jQuery('#dyntable2').dataTable( {
-            "bScrollInfinite": true,
-            "bScrollCollapse": true,
-            "sScrollY": "300px"
-        });
-        
-    });
-	
-</script>
+
 </head>
 
 <body>
@@ -241,7 +222,7 @@
                         	out.print("class=\"active\""); %>><a href="teachercodeassign.html?cid=${cid}">编程作业</a></li>
                     </ul>
                 </li>
-				<li <%if(uri.indexOf("teachergrademan")!=-1||uri.indexOf("teachergradedesc")!=-1) out.print("class=\"active\""); %>><a href="teachergrademan?cid=${cid}"><span class="iconfa-hand-up"></span> 课程管理</a></li>
+				<li <%if(uri.indexOf("teachergrademan")!=-1||uri.indexOf("teachergradedesc")!=-1) out.print("class=\"active\""); %>><a href="teachergrademan?cid=${cid}"><span class="iconfa-hand-up"></span> 成绩管理</a></li>
 				
                 
                 <li <%if(uri.indexOf("teacherappealman")!=-1||uri.indexOf("teachersendbox")!=-1) out.print("class=\"active\""); %>><a href="teacherappealman"><span class="iconfa-envelope"></span> 申诉处理</a></li>

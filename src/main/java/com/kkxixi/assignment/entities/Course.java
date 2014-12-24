@@ -1,6 +1,7 @@
 package com.kkxixi.assignment.entities;
 
 import java.sql.Timestamp;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,7 +11,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -43,6 +47,13 @@ public class Course {
 	@Column(name="createtime")
 	private Timestamp createtime;
 
+	@OneToMany(mappedBy = "cid" , cascade = CascadeType.ALL)
+	private Set<Assign> assigns;
+	
+	@ManyToMany
+	@JoinTable(name="study",joinColumns = {@JoinColumn(name="cid")},inverseJoinColumns = {@JoinColumn(name="uid")})
+	private Set<User> students;
+	
 	public int getCid() {
 		return cid;
 	}
@@ -105,5 +116,21 @@ public class Course {
 
 	public void setTeacher(User teacher) {
 		this.teacher = teacher;
+	}
+
+	public Set<Assign> getAssigns() {
+		return assigns;
+	}
+
+	public void setAssigns(Set<Assign> assigns) {
+		this.assigns = assigns;
+	}
+
+	public Set<User> getStudents() {
+		return students;
+	}
+
+	public void setStudents(Set<User> students) {
+		this.students = students;
 	}
 }

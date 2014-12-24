@@ -5,6 +5,8 @@ import java.util.List;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import net.sf.json.JSONArray;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kkxixi.assignment.entities.Assign;
 import com.kkxixi.assignment.entities.Course;
+import com.kkxixi.assignment.entities.Grade;
 import com.kkxixi.assignment.entities.User;
 
 @Controller
@@ -47,7 +50,7 @@ public class TeacherAssignController{
 			{
 				String uid = cookies[i].getValue();
 				Session session = sessionFactory.openSession();
-				Query query = session.createSQLQuery("select head,content,start,deadline from assignment,course where course.teacher_uid=:uid and course.cid=:cid");
+				Query query = session.createSQLQuery("select head,content,start,deadline,aid from assignment,course where course.teacher_uid=:uid and course.cid=:cid and assignment.cid=course.cid");
 				query.setString("uid",uid);
 				query.setString("cid", Integer.toString(cid));
 				List list = query.list();
@@ -111,6 +114,113 @@ public class TeacherAssignController{
 		session.close();
 		return "{\"status\":\"ok\"}";
 	}
+	
+	@RequestMapping(value="/delaassign")
+	public @ResponseBody String delaassign(@RequestParam(value="aid")int aid){
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		Assign assign = new Assign();
+		assign.setAid(aid);
+		session.delete(assign);
+		tx.commit();
+		session.close();
+		return "{\"status\":\"ok\"}";
+		
+	}
+	
+	@RequestMapping(value="/fetchaassign",produces = "text/html;charset=UTF-8")
+	public @ResponseBody String fetchAAssign(@RequestParam(value="aid")int aid){
+		Session session = sessionFactory.openSession();
+		Query query = session.createQuery("from Assign where aid=:aid");
+		query.setString("aid", Integer.toString(aid));
+		List<Assign> list = query.list();
+		session.close();
+		Assign assign = list.get(0);
+		
+		return "{\"assignhead\":\""+assign.getHead()+"\",\"assigncontent\":\""+assign.getContent()+
+				"\","+ "\"start\":\""+assign.getStart()+"\",\"deadline\":\""+assign.getDeadline()+
+				"\"}";
+	}
+	
+	@RequestMapping(value="/modifyassign",method=RequestMethod.POST)
+	public @ResponseBody String modifyAssign(@RequestParam(value="aid")int aid,@RequestParam(value="assignhead")String assignhead,@RequestParam("assigncontent")String assigncontent,
+			@RequestParam("start")String start,@RequestParam("deadline")String deadline){
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		Query query = session.createQuery("from Assign where aid=:aid");
+		query.setString("aid", Integer.toString(aid));
+		List<Assign> list = query.list();
+		Assign assign = list.get(0);
+		assign.setHead(assignhead);
+		assign.setContent(assigncontent);
+		assign.setStart(start);
+		assign.setDeadline(deadline);
+		
+		session.update(assign);
+		tx.commit();
+		session.close();
+		return "{\"status\":\"ok\"}";
+	}
+	
+	@RequestMapping("/teachercheckassign")
+	public ModelAndView teachercheckassign(@RequestParam(value="cid")int cid)
+	{
+		ModelAndView model = new ModelAndView();
+		model.setViewName("teachercheckassign");
+		model.addObject("cid",cid);
+		Session session = sessionFactory.openSession();
+		Query query = session.createSQLQuery("select assignment.aid,assignment.cid,head,start,deadline,studentnumber,ifnull(t.cnt,0) as submitnumber,ifnull(p.cnt,0) notverdictnum from assignment,course,(select assignment.aid,assignment.cid,cnt from assignment left join (select aid,count(*) as cnt from grade group by aid)q on q.aid=assignment.aid)t,(select assignment.aid,assignment.cid,cnt from assignment left join (select aid,count(*) as cnt from grade where state=0 group by aid)q on q.aid=assignment.aid)p where assignment.cid=:cid and assignment.cid=course.cid and t.aid=assignment.aid and p.aid=assignment.aid;");
+		
+		query.setString("cid", Integer.toString(cid));
+		List list = query.list();
+		model.addObject("checklist", list);
+		session.close();
+		return model;
+		
+	}
+	
+	@RequestMapping("/teachercheckdescassign")
+	public ModelAndView teachercheckdescassign(@RequestParam(value="cid")int cid,@RequestParam(value="aid")int aid)
+	{
+		ModelAndView model = new ModelAndView();
+		model.setViewName("teachercheckdescassign");
+		model.addObject("cid",cid);
+		model.addObject("aid",aid);
+		Session session = sessionFactory.openSession();
+		Query query = session.createSQLQuery("select head,start,deadline,submit,username,state,score,gid from assignment a,grade g,user u where a.aid=g.aid and u.uid=g.uid and g.aid=:aid");
+		query.setString("aid", Integer.toString(aid));
+		List list = query.list();
+		model.addObject("desclist",list);
+		session.close();
+		return model;
+		
+	}
+	@RequestMapping("/teachercheckperassign")
+	public ModelAndView teachercheckperassign(@RequestParam(value="cid")int cid,@RequestParam(value="aid")int aid,@RequestParam(value="gid")int gid)
+	{
+		ModelAndView model = new ModelAndView();
+		model.setViewName("teachercheckperassign");
+		model.addObject("cid",cid);
+		model.addObject("aid",aid);
+		model.addObject("gid", gid);
+		return model;
+		
+	}
+	
+	@RequestMapping(value="/fetchperassign",produces = "text/html;charset=UTF-8")
+	public @ResponseBody String fetchPerAssign(@RequestParam(value="gid")int gid){
+		Session session = sessionFactory.openSession();
+		Query query = session.createSQLQuery("select head,deadline,submit,g.content,score from assignment a,grade g where a.aid=g.aid and g.gid=:gid");
+		query.setString("gid", Integer.toString(gid));
+		List<Grade> list = query.list();
+		
+		Object object = list.get(0);
+		JSONArray json = JSONArray.fromObject(object);
+		session.close();
+		return json.toString();
+	}
+	
+	
 	
 }
 

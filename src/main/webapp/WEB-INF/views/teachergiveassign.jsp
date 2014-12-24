@@ -14,7 +14,7 @@ window.onload = function(){
 
 
 function btnclick(){
-	alert("111111");
+	//alert("111111");
 	var assignhead = jQuery("#assignhead").val(), assigncontent = jQuery("#assigncontent").val(),
 	datepicker1 = jQuery("#datepicker1").val(), timepicker2 = jQuery("#timepicker2").val(),
 	datepicker = jQuery("#datepicker").val(), timepicker1 = jQuery("#timepicker1").val();
