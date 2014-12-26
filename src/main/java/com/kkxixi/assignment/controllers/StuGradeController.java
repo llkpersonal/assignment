@@ -18,13 +18,6 @@ public class StuGradeController {
 		return model;
 	}
 	
-	@RequestMapping(value="/stugiveassign")
-	public ModelAndView stuGiveAssign(){
-		ModelAndView model = new ModelAndView();
-		model.setViewName("stugiveassign");
-		return model;
-	}
-	
 	@RequestMapping(value="/stugradedesc")
 	public ModelAndView stuGradeDesc(){
 		ModelAndView model = new ModelAndView();

@@ -6,34 +6,13 @@
 	<c:param name="title" value="查看作业" />
 </c:import>
 
-<script type="text/javascript">
-    jQuery(document).ready(function(){
-        // dynamic table
-        jQuery('#dyntable').dataTable({
-            "sPaginationType": "full_numbers",
-            "aaSortingFixed": [[0,'asc']],
-            "fnDrawCallback": function(oSettings) {
-                jQuery.uniform.update();
-            }
-        });
-        
-        jQuery('#dyntable2').dataTable( {
-            "bScrollInfinite": true,
-            "bScrollCollapse": true,
-            "sScrollY": "300px"
-        });
-        
-    });
-	
-</script>
-
     <div class="rightpanel">
         
          <ul class="breadcrumbs">
             <li><a href="stuhomepage.html"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
             <li><a href="stushowassign.html">作业管理</a> <span class="separator"></span></li>
             <li><a href="stushowassign.html">查看作业</a> <span class="separator"></span></li>
-            <li><a href="stushowdescassign.html">第一次作业</a></li>
+            <li><a href="stushowdescassign.html">作业详情</a></li>
 			 
             <li class="right">
                 <a href="" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-tint"></i>皮肤</a>
@@ -56,7 +35,7 @@
             <div class="pageicon"><span class="iconfa-table"></span></div>
             <div class="pagetitle">
                 <h5>查看作业</h5>
-                <h1>第一次作业</h1>
+                <h1>作业详情</h1>
             </div>
         </div><!--pageheader-->
         
@@ -64,36 +43,30 @@
             <div class="maincontentinner">
             
                         <div class="widget">
-            <h4 class="widgettitle">第一次作业</h4>
+            <h4 class="widgettitle">作业详情</h4>
             <div class="widgetcontent nopadding">
           
-                   
-                        
                         <form class="stdform stdform2" method="post" action="stushowdescassign.html">
                             <p>
                                 <label>作业标题</label>
-                                <span class="field"><input type="text" name="assigntitle" id="assigntitle2" class="input-xxlarge" placeholder="第一次作业" readonly /></span>
+                                <span class="field"><input type="text" name="assigntitle" id="assigntitle2" class="input-xxlarge" placeholder="${assignlist[0]}" readonly /></span>
                             </p>
                             
                             <p>
                                 <label>起始日期</label>
-                                <span class="field"><input type="text" name="stoptime" id="stoptime2" class="input-xxlarge" placeholder="2014.10.10 12:00" readonly /></span>
+                                <span class="field"><input type="text" name="stoptime" id="stoptime2" class="input-xxlarge" placeholder="${assignlist[3]}" readonly /></span>
                             </p>
                             
                             <p>
                                 <label>截止日期</label>
-                                <span class="field"><input type="text" name="sendtime" id="sendtime2" class="input-xxlarge" placeholder="2014.10.10 12:00" readonly /></span>
+                                <span class="field"><input type="text" name="sendtime" id="sendtime2" class="input-xxlarge" placeholder="${assignlist[2]}" readonly /></span>
                             </p>
                             
                             <p>
                                 <label>作业内容 </label>
-                                <span class="field"><textarea cols="80" rows="5" name="content" id="content2" class="span5"></textarea></span>
+                                <span class="field"><textarea cols="80" rows="5" name="content" id="content2" class="span5">${assignlist[1]}</textarea></span>
                             </p>
                             
-							<p>
-                                <label>作业分数</label>
-                                <span class="field"><input type="text" name="grade" id="grade2" class="input-large" placeholder="97"  /></span>
-                            </p>
                             <p>
                                 <label>附件列表</label>
                                 <span class="field">

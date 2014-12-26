@@ -6,32 +6,12 @@
 	<c:param name="title" value="作业管理" />
 </c:import>
 
-<script type="text/javascript">
-    jQuery(document).ready(function(){
-        // dynamic table
-        jQuery('#dyntable').dataTable({
-            "sPaginationType": "full_numbers",
-            "aaSortingFixed": [[0,'asc']],
-            "fnDrawCallback": function(oSettings) {
-                jQuery.uniform.update();
-            }
-        });
-        
-        jQuery('#dyntable2').dataTable( {
-            "bScrollInfinite": true,
-            "bScrollCollapse": true,
-            "sScrollY": "300px"
-        });
-        
-    });
-	
-</script>
     <div class="rightpanel">
         
          <ul class="breadcrumbs">
             <li><a href="stuhomepage.html"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
-            <li><a href="stushowassign.html">作业管理</a> <span class="separator"></span></li>
-            <li><a href="stushowassign.html">查看/提交作业</a>></li>
+            <li><a href="stushowassign.html&cid={$cid}">作业管理</a> <span class="separator"></span></li>
+            <li><a href="stushowassign.html&cid={$cid}">查看/提交作业</a>></li>
              
             <li class="right">
                 <a href="" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-tint"></i>皮肤</a>
@@ -82,167 +62,33 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="gradeX">
+                    <c:forEach items="${assignlist}" var="assign" >
+                    		<tr class="gradeA">
                           <td class="aligncenter"><span class="center">
                             <input type="checkbox" />
                           </span></td>
-                            <td class="center">第一次作业</td>
-                            <td class="center">2014.10.10</td>
-                            <td class="center">2014.10.28</td>
-							
+                            <td class="center">${assign[0] }</td>
+                            <td class="center">${assign[2] }</td>
+                            <td class="center">${assign[3] }</td>
                             <td class="center">
-								<a href="stushowdescassign.html">查看</a>
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							    <a href="stugiveassign.html">提交</a>
-								</td>
+                            
+                                <a id="topic" href="stushowdescassign.html?aid=${assign[4]}&cid=${cid}" data-placement="top" data-toggle="tooltip" data-original-title="Click me to view topic page">查看</a>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <!-- <td class="center">
+								<a href="stugiveassign.html?aid=${assign[4]}&cid=${cid}">
+								<c:choose>
+									<c:when test="${desc[5]==0 }">未批改</c:when>
+									<c:otherwise>${desc[6] }</c:otherwise>
+								</c:choose>
+								</a>
+								</td>-->
+                                <a href="stugiveassign.html?aid=${assign[4]}&cid=${cid}">提交</a>
+                                
+                                <!--<a href="stugiveassign.html?aid=${assign[4]}&cid=${cid}">修改</a>-->
+			                </td>
                         
                         </tr>
-                        <tr class="gradeC">
-                          <td class="aligncenter"><span class="center">
-                            <input type="checkbox" />
-                          </span></td>
-                            <td class="center">第一次作业</td>
-                            <td class="center">2014.10.10</td>
-                            <td class="center">2014.10.28</td>
-							
-                            <td class="center">
-								<a href="stushowdescassign.html">查看</a>
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							    <a href="stugiveassign.html">提交</a>
-								</td>
-                        </tr>
-                        <tr class="gradeA">
-                          <td class="aligncenter"><span class="center">
-                            <input type="checkbox" />
-                          </span></td>
-                            <td class="center">第一次作业</td>
-                            <td class="center">2014.10.10</td>
-                            <td class="center">2014.10.28</td>
-							<td class="center">
-								<a href="stushowdescassign.html">查看</a>
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							    <a href="stugiveassign.html">提交</a>
-								</td>
-                        </tr>
-                        <tr class="gradeA">
-                         <td class="aligncenter"><span class="center">
-                            <input type="checkbox" />
-                          </span></td>
-                            <td class="center">第一次作业</td>
-                            <td class="center">2014.10.10</td>
-                            <td class="center">2014.10.28</td>
-							<td class="center">
-								<a href="stushowdescassign.html">查看</a>
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							    <a href="stugiveassign.html">提交</a>
-								</td>
-                        </tr>
-                        <tr class="gradeA">
-                         <td class="aligncenter"><span class="center">
-                            <input type="checkbox" />
-                          </span></td>
-                            <td class="center">第一次作业</td>
-                            <td class="center">2014.10.10</td>
-                            <td class="center">2014.10.28</td>
-							<td class="center">
-								<a href="stushowdescassign.html">查看</a>
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							    <a href="stugiveassign.html">提交</a>
-								</td>
-                        </tr>
-                        <tr class="gradeA">
-                         
-                          <td class="aligncenter"><span class="center">
-                            <input type="checkbox" />
-                          </span></td>
-                            <td class="center">第一次作业</td>
-                            <td class="center">2014.10.10</td>
-                            <td class="center">2014.10.28</td>
-							<td class="center">
-								<a href="stushowdescassign.html">查看</a>
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							    <a href="stugiveassign.html">提交</a>
-								</td>
-                        </tr>
-                        <tr class="gradeA">
-                          <td class="aligncenter"><span class="center">
-                            <input type="checkbox" />
-                          </span></td>
-                            <td class="center">第一次作业</td>
-                            <td class="center">2014.10.10</td>
-                            <td class="center">2014.10.28</td>
-							<td class="center">
-								<a href="stushowdescassign.html">查看</a>
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							    <a href="stugiveassign.html">提交</a>
-								</td>
-                        </tr>
-                        <tr class="gradeA">
-                          <td class="aligncenter"><span class="center">
-                            <input type="checkbox" />
-                          </span></td>
-                            <td class="center">第一次作业</td>
-                            <td class="center">2014.10.10</td>
-                            <td class="center">2014.10.28</td>
-							<td class="center">
-								<a href="stushowdescassign.html">查看</a>
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							    <a href="stugiveassign.html">提交</a>
-								</td>
-                        </tr>
-                        <tr class="gradeA">
-                         <td class="aligncenter"><span class="center">
-                            <input type="checkbox" />
-                          </span></td>
-                            <td class="center">第一次作业</td>
-                            <td class="center">2014.10.10</td>
-                            <td class="center">2014.10.28</td>
-							<td class="center">
-								<a href="stushowdescassign.html">查看</a>
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							    <a href="stugiveassign.html">提交</a>
-								</td>
-                        </tr>
-                        <tr class="gradeA">
-                        <td class="aligncenter"><span class="center">
-                            <input type="checkbox" />
-                          </span></td>
-                            <td class="center">第一次作业</td>
-                            <td class="center">2014.10.10</td>
-                            <td class="center">2014.10.28</td>
-							<td class="center">
-								<a href="stushowdescassign.html">查看</a>
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							    <a href="stugiveassign.html">提交</a>
-								</td>
-                        </tr>
-                        <tr class="gradeA">
-                          <td class="aligncenter"><span class="center">
-                            <input type="checkbox" />
-                          </span></td>
-                            <td class="center">第一次作业</td>
-                            <td class="center">2014.10.10</td>
-                            <td class="center">2014.10.28</td>
-							<td class="center">
-								<a href="stushowdescassign.html">查看</a>
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							    <a href="stugiveassign.html">提交</a>
-								</td>
-                        </tr>
-                        <tr class="gradeA">
-                          <td class="aligncenter"><span class="center">
-                            <input type="checkbox" />
-                          </span></td>
-                            <td class="center">第一次作业</td>
-                            <td class="center">2014.10.10</td>
-                            <td class="center">2014.10.28</td>
-							<td class="center">
-								<a href="stushowdescassign.html">查看</a>
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							    <a href="stugiveassign.html">提交</a>
-								</td>
-                        </tr>
-                       
+                    	</c:forEach>    
                     </tbody>
                 </table>
                 

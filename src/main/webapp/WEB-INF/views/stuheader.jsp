@@ -39,6 +39,38 @@
 <script type="text/javascript" src="js/chosen.jquery.min.js"></script>
 <script type="text/javascript" src="js/forms.js"></script>
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/excanvas.min.js"></script><![endif]-->
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+        // dynamic table
+        jQuery('#dyntable').dataTable({
+            "sPaginationType": "full_numbers",
+            "aaSortingFixed": [[0,'asc']],
+            "fnDrawCallback": function(oSettings) {
+                jQuery.uniform.update();
+            }
+        });
+        
+        jQuery('#dyntable2').dataTable( {
+            "bScrollInfinite": true,
+            "bScrollCollapse": true,
+            "sScrollY": "300px"
+        });
+        
+    });
+	
+</script>
+<script type="text/javascript">
+	$('.form_datetime').datetimepicker({
+        //language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		forceParse: 0,
+        showMeridian: 1
+    });
+	</script>
 </head>
 
 <body>
@@ -148,18 +180,34 @@
             <ul class="nav nav-tabs nav-stacked">
             	<li class="nav-header">导航</li>
                 <li <%if(uri.indexOf("stuhomepage")!=-1) out.print("class=\"active\""); %>><a href="stuhomepage"><span class="iconfa-laptop"></span> 主页</a></li>
-                
-                <li class="dropdown"><a href=""><span class="iconfa-pencil"></span> 作业管理</a>
-                	<ul>
-                    	
-						<li <%if(uri.indexOf("stushowassign")!=-1||uri.indexOf("stushowassign")!=-1) out.print("class=\"active\""); %>><a href="stushowassign">查看/提交作业</a></li>
-                        
-                        <li <%if(uri.indexOf("stucodeassign")!=-1||uri.indexOf("stucodeassign")!=-1) out.print("class=\"active\""); %>><a href="stucodeassign">编程作业</a></li>
+                <li class="dropdown <%
+                 if(uri.indexOf("stugiveassign")!=-1||
+                         uri.indexOf("stushowassign")!=-1||uri.indexOf("stushowdescassign")!=-1||
+                         uri.indexOf("stucodeassign")!=-1||
+                         uri.indexOf("stucodedescassign")!=-1||uri.indexOf("stucodeperassign")!=-1
+                		 ) {
+                	 out.print("active"); 
+                 }
+                		 %>"><a href=""><span class="iconfa-pencil"></span> 作业管理</a>
+                	<ul <%
+                	 if(uri.indexOf("stugiveassign")!=-1||
+                		 uri.indexOf("stushowassign")!=-1||uri.indexOf("stushowdescassign")!=-1||
+                		 uri.indexOf("stucodeassign")!=-1||
+                         uri.indexOf("stucodedescassign")!=-1||uri.indexOf("stucodeperassign")!=-1
+                		 ) {
+                	 out.print("style=\"display: block\""); 
+                 }
+                		 %>>
+                		<li <%if(uri.indexOf("stushowassign")!=-1||uri.indexOf("stugiveassign")!=-1) out.print("class=\"active\""); %>><a href="stushowassign.html?cid=${cid}">查看/提交作业</a></li>
+                        <li <%if(uri.indexOf("stucodeassign")!=-1||
+                        uri.indexOf("stucodedescassign")!=-1||uri.indexOf("stucodeperassign")!=-1) 
+                        	out.print("class=\"active\""); %>><a href="stucodeassign.html?cid=${cid}">编程作业</a></li>
                     </ul>
                 </li>
-				<li <%if(uri.indexOf("stugrademan")!=-1||uri.indexOf("stugrademan")!=-1) out.print("class=\"active\""); %>><a href="stugrademan"><span class="iconfa-hand-up"></span> 成绩管理</a></li>
+
+				<li <%if(uri.indexOf("stugrademan")!=-1||uri.indexOf("stugradedesc")!=-1) out.print("class=\"active\""); %>><a href="stugrademan?cid=${cid}"><span class="iconfa-hand-up"></span> 成绩管理</a></li>
                 
-                <li <%if(uri.indexOf("stuappealman")!=-1||uri.indexOf("stuappealman")!=-1) out.print("class=\"active\""); %>><a href="stuappealman"><span class="iconfa-envelope"></span> 申诉处理</a></li>
+                <li <%if(uri.indexOf("stuappealman")!=-1) out.print("class=\"active\""); %>><a href="stuappealman"><span class="iconfa-envelope"></span> 申诉处理</a></li>
                 <li <%if(uri.indexOf("stucalendar")!=-1) out.print("class=\"active\""); %>><a href="showstucalendar"><span class="iconfa-calendar"></span>日历</a></li>
 				
                 

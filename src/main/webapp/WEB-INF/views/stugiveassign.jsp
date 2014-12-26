@@ -5,13 +5,39 @@
 <c:import url="stuheader.jsp">
 	<c:param name="title" value="提交作业" />
 </c:import>
-
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	jQuery("#btn_submit").click(function(){
+		var assigncontent = jQuery("#assigncontent").val(), assignstucontent = jQuery("#assignstucontent").val(), aid=${aid};
+		//alert("000");
+		jQuery.ajax({
+			type : "POST",
+			url : "subassign",
+			dataType : "json",
+			
+			data : {
+				"assigncontent" : assigncontent,
+				"assignstucontent" : assignstucontent,
+				"aid" : aid,
+			},
+			success : function(data) {
+				if (data["status"] == "failed") {
+					alert("发送失败！");
+				} else {
+					alert("发送成功！");
+					location.href = "stushowassign?cid=${cid}";
+				}
+			}
+		});
+	});
+});
+</script>
     <div class="rightpanel">
         
          <ul class="breadcrumbs">
             <li><a href="stuhomepage.html"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
-            <li><a href="stushowassign.html">查看/提交作业</a> <span class="separator"></span></li>
-            <li><a href="stugiveassign.html">提交作业</a> </li>
+            <li><a href="stushowassign.html?cid=${cid}">查看/提交作业</a> <span class="separator"></span></li>
+            <li><a href="stugiveassign.html?cid=${cid}&aid=${aid}">提交作业</a> </li>
             
 			 
             <li class="right">
@@ -45,17 +71,15 @@
             <div class="widget">
             <h4 class="widgettitle">提交作业</h4>
             <div class="widgetcontent">
-                <form class="stdform" action="giveassign.html" method="post">
-                   
-                        
+                <div class="stdform">
                         <p>
                         	<label>作业标题</label>
-                            <span class="field"><input type="text" name="input4" class="input-xlarge" /></span>
+                            <span class="field"><input id="assigncontent" type="text" name="assigncontent" class="input-xlarge" /></span>
                         </p>
                        
                         <p>
                             <label>作业内容</label>
-                            <span class="field"><textarea cols="80" rows="8" class="span7"></textarea></span> 
+                            <span class="field"><textarea id="assignstucontent" name="assignstucontent" cols="80" rows="8" class="span7"></textarea></span> 
                         </p>
 			
                      
@@ -77,11 +101,11 @@
 			</div>
                         
                       <p class="stdformbutton">
-                                <button class="btn btn-primary">提交</button>
+                                <button id="btn_submit" class="btn btn-primary" >提交</button>
                                 <button type="reset" class="btn">重置</button>
                             </p>  
                         
-                </form>
+                </div>
             </div><!--widgetcontent-->
             </div><!--widget-->
             
@@ -102,6 +126,5 @@
     </div><!--rightpanel-->
     
 </div><!--mainwrapper-->
-
 </body>
 </html>
