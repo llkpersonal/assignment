@@ -180,12 +180,13 @@ public class TeacherAssignController{
 	}
 	
 	@RequestMapping("/teachercheckdescassign")
-	public ModelAndView teachercheckdescassign(@RequestParam(value="cid")int cid,@RequestParam(value="aid")int aid)
+	public ModelAndView teachercheckdescassign(@RequestParam(value="cid")int cid,@RequestParam(value="aid")int aid,@RequestParam(value="head")String head)
 	{
 		ModelAndView model = new ModelAndView();
 		model.setViewName("teachercheckdescassign");
 		model.addObject("cid",cid);
 		model.addObject("aid",aid);
+		model.addObject("head",head);
 		Session session = sessionFactory.openSession();
 		Query query = session.createSQLQuery("select head,start,deadline,submit,username,state,score,gid from assignment a,grade g,user u where a.aid=g.aid and u.uid=g.uid and g.aid=:aid");
 		query.setString("aid", Integer.toString(aid));
@@ -196,13 +197,14 @@ public class TeacherAssignController{
 		
 	}
 	@RequestMapping("/teachercheckperassign")
-	public ModelAndView teachercheckperassign(@RequestParam(value="cid")int cid,@RequestParam(value="aid")int aid,@RequestParam(value="gid")int gid)
+	public ModelAndView teachercheckperassign(@RequestParam(value="cid")int cid,@RequestParam(value="aid")int aid,@RequestParam(value="gid")int gid,@RequestParam(value="head")String head)
 	{
 		ModelAndView model = new ModelAndView();
 		model.setViewName("teachercheckperassign");
 		model.addObject("cid",cid);
 		model.addObject("aid",aid);
 		model.addObject("gid", gid);
+		model.addObject("head",head);
 		return model;
 		
 	}
@@ -210,7 +212,7 @@ public class TeacherAssignController{
 	@RequestMapping(value="/fetchperassign",produces = "text/html;charset=UTF-8")
 	public @ResponseBody String fetchPerAssign(@RequestParam(value="gid")int gid){
 		Session session = sessionFactory.openSession();
-		Query query = session.createSQLQuery("select head,deadline,submit,g.content,score from assignment a,grade g where a.aid=g.aid and g.gid=:gid");
+		Query query = session.createSQLQuery("select head,deadline,submit,g.stucontent,score,name from assignment a,grade g,user where a.aid=g.aid and g.gid=:gid and user.uid=g.uid");
 		query.setString("gid", Integer.toString(gid));
 		List<Grade> list = query.list();
 		
@@ -220,7 +222,56 @@ public class TeacherAssignController{
 		return json.toString();
 	}
 	
+	@RequestMapping(value="/modifyscore",method=RequestMethod.POST)
+	public @ResponseBody String modifyScore(@RequestParam(value="gid")int gid,@RequestParam(value="score")Double score){
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		Query query = session.createQuery("from Grade where gid=:gid");
+		query.setString("gid", Integer.toString(gid));
+		List<Grade> list = query.list();
+		Grade grade = list.get(0);
+		grade.setScore(score);
+		grade.setState(1);
+		session.update(grade);
+		tx.commit();
+		session.close();
+		return "{\"status\":\"ok\"}";
+	}
 	
-	
+	@RequestMapping("/teachergrademan")
+	public ModelAndView teachergrademan(@RequestParam(value="cid")int cid)
+	{
+		ModelAndView model = new ModelAndView();
+		model.setViewName("teachergrademan");
+		model.addObject("cid",cid);
+		Session session = sessionFactory.openSession();
+		Query query = session.createSQLQuery("select assignment.aid,assignment.cid,head,start,deadline,max(score),min(score),avg(score),studentnumber,ifnull(t.cnt,0) as submitnumber from assignment,course,grade,(select assignment.aid,assignment.cid,cnt from assignment left join (select aid,count(*) as cnt from grade group by aid)q on q.aid=assignment.aid)t,(select assignment.aid,assignment.cid,cnt from assignment left join (select aid,count(*) as cnt from grade where state=0 group by aid)q on q.aid=assignment.aid)p where assignment.cid=:cid and assignment.cid=course.cid and t.aid=assignment.aid and p.aid=assignment.aid and p.aid=grade.aid group by grade.aid;");
+		
+		query.setString("cid", Integer.toString(cid));
+		List list = query.list();
+		model.addObject("manlist",list);
+		session.close();
+		return model;
+		
+	}
+	@RequestMapping("/teachergradedesc")
+	public ModelAndView teachergradedesc(@RequestParam(value="cid")int cid,@RequestParam(value="aid")int aid,@RequestParam(value="head")String head)
+	{
+		ModelAndView model = new ModelAndView();
+		model.setViewName("teachergradedesc");
+		model.addObject("cid",cid);
+		model.addObject("aid",aid);
+		model.addObject("head",head);
+		Session session = sessionFactory.openSession();
+		Query query = session.createSQLQuery("select name,score,user.uid,head,gid from assignment a,grade,user where grade.uid=user.uid and grade.aid=a.aid and a.cid=:cid and a.aid=:aid");
+		
+		query.setString("cid", Integer.toString(cid));
+		query.setString("aid", Integer.toString(aid));
+		List list = query.list();
+		model.addObject("desclist",list);
+		session.close();
+		return model;
+		
+	}
 }
 

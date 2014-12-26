@@ -9,8 +9,8 @@
 <div class="rightpanel">
         
          <ul class="breadcrumbs">
-            <li><a href="homepage.html"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
-            <li><a href="grademan.html">成绩管理</a></li>
+            <li><a href="teacherhomepage.html"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
+            <li><a href="teachergrademan.html?cid=${cid}">成绩管理</a></li>
            
              
             <li class="right">
@@ -57,6 +57,9 @@
                             <th class="head0 center">作业标题</th>
                             <th class="head1 center">起始日期</th>
                             <th class="head0 center">截止日期</th>
+                            <th class="head1 center">最低分</th>
+							<th class="head0 center">最高分</th>
+							<th class="head1 center">平均分</th>
 							<th class="head1 center">学生总人数</th>
 							<th class="head0 center">上交总人数</th>
                             
@@ -64,64 +67,26 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="gradeX">
-                          <td class="aligncenter"><span class="center">
-                            <input type="checkbox" />
-                          </span></td>
-                            <td class="center">第一次作业</td>
-                            <td class="center">2014.10.10</td>
-                            <td class="center">2014.10.28</td>
-							<td class="center">50</td>
-							<td class="center">45</td>
-							
-                            <td class="center">
-								<a href="gradedesc.html">查看/修改</a>
-								</td>
-                        
-                        </tr>
-                        <tr class="gradeC">
-                          <td class="aligncenter"><span class="center">
-                            <input type="checkbox" />
-                          </span></td>
-                            <td class="center">第二次作业</td>
-                            <td class="center">2014.10.10</td>
-                            <td class="center">2014.10.28</td>
-							<td class="center">50</td>
-							<td class="center">45</td>
-							
-                            <td class="center">
-								<a href="gradedesc.html">查看/修改</a>
-								</td>
-                        </tr>
+                    <c:forEach items="${manlist }" var="man">
+                    
                         <tr class="gradeA">
                           <td class="aligncenter"><span class="center">
                             <input type="checkbox" />
                           </span></td>
-                            <td class="center">第三次作业</td>
-                            <td class="center">2014.10.10</td>
-                            <td class="center">2014.10.28</td>
-							<td class="center">50</td>
-							<td class="center">45</td>
-							
+                            <td class="center">${man[2]}</td>
+                            <td class="center">${man[3]}</td>
+                            <td class="center">${man[4]}</td>
+                            <td class="center">${man[6]}</td>
+							<td class="center">${man[5]}</td>
+							<td class="center">${man[7]}</td>
+							<td class="center">${man[8]}</td>
+							<td class="center">${man[9]}</td>
                             <td class="center">
-								<a href="gradedesc.html">查看/修改</a>
+								<a href="teachergradedesc.html?cid=${cid }&aid=${man[0]}&head=${man[2]}">查看/修改</a>
 								</td>
-                        </tr>
-                        <tr class="gradeA">
-                         <td class="aligncenter"><span class="center">
-                            <input type="checkbox" />
-                          </span></td>
-                            <td class="center">第一次作业</td>
-                            <td class="center">2014.10.10</td>
-                            <td class="center">2014.10.28</td>
-							<td class="center">50</td>
-							<td class="center">45</td>
-							
-                            <td class="center">
-								<a href="gradedesc.html">查看/修改</a>
-								</td>
-                        </tr>
                         
+                        </tr>
+                      </c:forEach> 
                        
                     </tbody>
                 </table>

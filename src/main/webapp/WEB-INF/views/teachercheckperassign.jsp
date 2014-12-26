@@ -11,25 +11,47 @@
 
 window.onload = function(){
 	getinfo(${gid});
-};
-
+}
 
 function getinfo(gid){
 	//global_gid = gid;
+	 
 	jQuery.ajax({
 		type : "GET",
 		url : "fetchperassign?gid="+gid,
 		dataType : "json",
 		success : function(data) {
 			jQuery("#assigntitle2").val(data[0]);
-			jQuery("#stoptime2").val(1900+data[1]["year"]+"/"+(1+data[1]["month"])+"/"+data[1]["date"]);
-			jQuery("#sendtime2").val(1900+data[2]["year"]+"/"+(1+data[2]["month"])+"/"+data[2]["date"]);
+			jQuery("#stoptime2").val(1900+data[1]["year"]+"/"+(1+data[1]["month"])+"/"+data[1]["date"]+" "+data[1]["hours"]+":"+data[1]["minutes"]);
+			jQuery("#sendtime2").val(1900+data[2]["year"]+"/"+(1+data[2]["month"])+"/"+data[2]["date"]+" "+data[1]["hours"]+":"+data[1]["minutes"]);
 			jQuery("#content2").val(data[3]);
 			jQuery("#grade2").val(data[4]);
-			
+			jQuery("#assignhead").text(data[0]);
+			jQuery("#username").text(data[5]);
+			jQuery("#usergrade").text(data[5]+"——"+data[4]);
+			jQuery("#username1").text(data[5]+"的作业");
 		}
 	});
 }
+
+function submit_score_info(){
+	var gid=${gid};
+	var score=jQuery("#grade2").val();
+	
+	jQuery.ajax({
+		type : "POST",
+		url : "modifyscore",
+		dataType:"json",
+		data:{
+			"gid":gid,
+			"score" : score
+		},
+		success: function(data){
+			location.reload();
+		}
+	});
+}
+
 </script>
 <div class="rightpanel">
         
@@ -37,8 +59,8 @@ function getinfo(gid){
              <li><a href="teacherhomepage.html"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
             <li><a href="teachershowassign.html?cid=${cid }">作业管理</a> <span class="separator"></span></li>
             <li><a href="teachercheckassign.html?cid=${cid }">批改作业</a> <span class="separator"></span></li>
-            <li><a href="teachercheckdescassign.html?cid=${cid }&aid=${aid}">第一次作业</a><span class="separator"></span></li>
-			 <li><a href="codeperassign.html">罗夕的作业</a></li>
+            <li><a href="teachercheckdescassign.html?cid=${cid }&aid=${aid}&head=${head}">${head}</a><span class="separator"></span></li>
+			 <li ><a href="teachercheckperassign.html?cid=${cid }&aid=${aid}&gid=${gid}&head=${head}" id="username1"></a></li>
             <li class="right">
                 <a href="" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-tint"></i>皮肤</a>
                 <ul class="dropdown-menu pull-right skin-color">
@@ -59,8 +81,8 @@ function getinfo(gid){
             </form>
             <div class="pageicon"><span class="iconfa-table"></span></div>
             <div class="pagetitle">
-                <h5>第一次编程作业</h5>
-                <h1>罗夕的作业</h1>
+                <h5 id="assignhead"></h5>
+                <h1 id="username"></h1>
             </div>
         </div><!--pageheader-->
         
@@ -68,12 +90,12 @@ function getinfo(gid){
             <div class="maincontentinner">
             
                         <div class="widget">
-            <h4 class="widgettitle">罗夕的作业 —— 97</h4>
+            <h4 class="widgettitle" id="usergrade"></h4>
             <div class="widgetcontent nopadding">
           
-                   
+                    
                         
-                        <form class="stdform stdform2">
+                        <div class="stdform stdform2">
                             <p>
                                 <label>作业标题</label>
                                 <span class="field"><input type="text" name="assigntitle" id="assigntitle2" class="input-xxlarge" placeholder="第一次作业" readonly /></span>
@@ -110,10 +132,10 @@ function getinfo(gid){
                             </p>
                                                     
                             <p class="stdformbutton">
-                                <button class="btn btn-primary">确认</button>
+                                <button onclick="submit_score_info()" class="btn btn-primary">确认</button>
                                 <button type="reset" class="btn">取消</button>
                             </p>
-                    </form>
+                    </div>
             </div><!--widgetcontent-->
             </div><!--widget-->
             

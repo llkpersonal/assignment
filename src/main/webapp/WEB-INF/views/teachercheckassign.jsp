@@ -10,7 +10,7 @@
          <ul class="breadcrumbs">
             <li><a href="teacherhomepage.html"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
             <li><a href="teachershowassign.html?cid=${cid }">作业管理</a> <span class="separator"></span></li>
-            <li><a href="teachercheckassign.html?cid=${cid }">批改作业</a>></li>
+            <li><a href="teachercheckassign.html?cid=${cid }">批改作业</a></li>
              
             <li class="right">
                 <a href="" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-tint"></i>皮肤</a>
@@ -75,7 +75,7 @@
 							<td class="center">${check[6]}</td>
 							<td class="center">${check[7]}</td>
                             <td class="center">
-								<a href="teachercheckdescassign.html?cid=${cid}&aid=${check[0]} ">批改</a>
+								<a href="teachercheckdescassign.html?cid=${cid}&aid=${check[0]}&head=${check[2] } ">批改</a>
 								</td>
                         
                         </tr>

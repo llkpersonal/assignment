@@ -227,7 +227,7 @@
                 
                 <li <%if(uri.indexOf("teacherappealman")!=-1||uri.indexOf("teachersendbox")!=-1) out.print("class=\"active\""); %>><a href="teacherappealman"><span class="iconfa-envelope"></span> 申诉处理</a></li>
                 <li <%if(uri.indexOf("teachercalender")!=-1) out.print("class=\"active\""); %>><a href="teachercalender"><span class="iconfa-calendar"></span> 日历</a></li>
-				<li <%if(uri.indexOf("teachersatistic")!=-1) out.print("class=\"active\""); %>><a href="teachersatistic"><span class="iconfa-calendar"></span> 统计</a></li>
+			
                 
              
              
