@@ -28,6 +28,9 @@ public class Grade{
 	@JoinColumn(name="aid")
 	private Assign aid;
 	
+	@Column(name="tittle")
+	private String tittle;
+	
 	@Column(name="score")
 	private double score;
 	
@@ -72,6 +75,12 @@ public class Grade{
 	}
 	public void setState(int state) {
 		this.state = state;
+	}
+	public String getTittle() {
+		return tittle;
+	}
+	public void setTittle(String tittle) {
+		this.tittle = tittle;
 	}
 	
 }
