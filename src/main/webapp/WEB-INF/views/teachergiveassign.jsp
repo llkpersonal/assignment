@@ -39,7 +39,7 @@ function btnclick(){
 			if (data["status"] == "failed") {
 				alert("添加失败，请检查是否有重复的作业标题！");
 			} else {
-				location.href = "teachershowassign?cid="+cid;
+				//location.href = "teachershowassign?cid="+cid;
 			}
 		}
 	});
@@ -87,7 +87,8 @@ function btnclick(){
             <div class="widget">
             <h4 class="widgettitle">布置作业</h4>
             <div class="widgetcontent">
-                <div class="stdform" >
+                <form onsubmit="btnclick()" action="getattach" method="post" class="stdform" enctype="multipart/form-data">
+
                    
                         
                         <p>
@@ -125,6 +126,7 @@ function btnclick(){
 				<span class="add-on"><i class="iconfa-time"></i></span>
 			    </div>
                         </div>
+              <input type="hidden" name="cid" value="${cid}" />
                                     
 			<div class="par">
 			    <label>添加附件</label>
@@ -136,18 +138,18 @@ function btnclick(){
 				</div>
 				<span class="btn btn-file"><span class="fileupload-new">附件</span>
 				<span class="fileupload-exists">修改</span>
-				<input type="file" /></span>
+				<input name="fileupload" type="file" /></span>
 				<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">移除</a>
 				</div>
 			    </div>
 			</div>
                         
                       <p class="stdformbutton">
-                                <button onclick="btnclick()" class="btn btn-primary" id="btn-add">添加</button>
+                                <button type="submit" class="btn btn-primary" id="btn-add">添加</button>
                                 <button type="reset" class="btn">重置</button>
                             </p>  
                         
-                </div>
+                </form>
             </div><!--widgetcontent-->
             </div><!--widget-->
             

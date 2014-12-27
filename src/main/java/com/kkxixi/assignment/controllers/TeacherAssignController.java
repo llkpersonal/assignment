@@ -1,5 +1,8 @@
 package com.kkxixi.assignment.controllers;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kkxixi.assignment.entities.Assign;
@@ -188,7 +192,7 @@ public class TeacherAssignController{
 		model.addObject("aid",aid);
 		model.addObject("head",head);
 		Session session = sessionFactory.openSession();
-		Query query = session.createSQLQuery("select head,start,deadline,submit,username,state,score,gid from assignment a,grade g,user u where a.aid=g.aid and u.uid=g.uid and g.aid=:aid");
+		Query query = session.createSQLQuery("select head,start,deadline,submit,username,state,score,gid from assignment a,grade g,user u where a.aid=g.aid and u.uid=g.uid and g.aid=:aid order by state");
 		query.setString("aid", Integer.toString(aid));
 		List list = query.list();
 		model.addObject("desclist",list);
@@ -273,5 +277,23 @@ public class TeacherAssignController{
 		return model;
 		
 	}
+	@RequestMapping(value="/getattach")
+	public String getattach(@RequestParam(value="fileupload")MultipartFile file,@RequestParam(value="cid")int cid	){
+		if(!file.isEmpty()){
+			System.out.println("========================================================");
+			System.out.println(file.getOriginalFilename());
+			System.out.println("========================================================");
+			try{
+				byte[] bytes = file.getBytes();
+				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File("E:\\"+file.getOriginalFilename())));
+                stream.write(bytes);
+                stream.close();
+			} catch (Exception e){
+				return "failed";
+			}
+		}
+		return "redirect:/ teachergiveassign.html?cid="+cid;
+	}
+	
 }
 

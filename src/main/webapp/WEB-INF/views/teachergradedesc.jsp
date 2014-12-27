@@ -69,7 +69,7 @@
                             
 							<td class="center">${desc[1]}</td>
 							<td class="center">
-								<a href="teachercheckperassign.html?cid=${cid }&aid=${aid}&gid=${desc[4]}">修改</a>
+								<a href="teachercheckperassign.html?cid=${cid }&aid=${aid}&gid=${desc[4]}&head=${desc[3]}">修改</a>
 								</td>
                         
                         </tr>
