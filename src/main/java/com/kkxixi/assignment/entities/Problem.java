@@ -52,6 +52,9 @@ public class Problem {
 	@Column(name="duedate")
 	private Timestamp duedate;
 	
+	@Column(name="spjcode")
+	private String spjcode;
+	
 	public int getPid() {
 		return pid;
 	}
@@ -117,6 +120,12 @@ public class Problem {
 	}
 	public void setBegindate(Timestamp begindate) {
 		this.begindate = begindate;
+	}
+	public String getSpjcode() {
+		return spjcode;
+	}
+	public void setSpjcode(String spjcode) {
+		this.spjcode = spjcode;
 	}
 	
 }

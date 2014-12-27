@@ -90,6 +90,7 @@ public class TeacherCodeAssignController {
 										 Integer.parseInt(times[1]),
 										 0,
 										 0));
+		problem.setSpjcode("no spj");
 		
 		Transaction tx = session.beginTransaction();
 		session.save(problem);
