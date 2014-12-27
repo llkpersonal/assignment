@@ -2,31 +2,15 @@
     pageEncoding="UTF-8"%>
 <%@ page isELIgnored="false"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:import url="stuheader.jsp">
-	<c:param name="title" value="编程作业" />
+<c:import url="teacherheader.jsp">
+	<c:param name="title" value="作业管理系统/编程作业" />
 </c:import>
-<link rel="stylesheet" href="css/fontandcolor.css" type="text/css" />
-<link rel="stylesheet" href="css/bootstrap-fileupload.min.css" type="text/css" />
-<link rel="stylesheet" href="css/bootstrap-timepicker.min.css" type="text/css" />
-<script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="js/bootstrap-fileupload.min.js"></script>
-<script type="text/javascript" src="js/bootstrap-timepicker.min.js"></script>
-<script type="text/javascript" src="js/jquery.validate.min.js"></script>
-<script type="text/javascript" src="js/jquery.tagsinput.min.js"></script>
-<script type="text/javascript" src="js/jquery.autogrow-textarea.js"></script>
-<script type="text/javascript" src="js/charCount.js"></script>
-<script type="text/javascript" src="js/colorpicker.js"></script>
-<script type="text/javascript" src="js/ui.spinner.min.js"></script>
-<script type="text/javascript" src="js/chosen.jquery.min.js"></script>
-<script type="text/javascript" src="js/forms.js"></script>
-
-
-    <div class="rightpanel">
+<div class="rightpanel">
         
          <ul class="breadcrumbs">
-            <li><a href="stuhomepage.html"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
-            <li><a href="stushowassign.html">作业管理</a> <span class="separator"></span></li>
-            <li><a href="stucodeassign.html">编程作业</a>></li>
+            <li><a href="homepage.html"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
+            <li><a href="showassign.html">作业管理</a> <span class="separator"></span></li>
+            <li><a href="codeassign.html">编程作业</a>></li>
              
             <li class="right">
                 <a href="" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-tint"></i>皮肤</a>
@@ -55,6 +39,8 @@
         
         <div class="maincontent">
             <div class="maincontentinner">
+				<a href="givecodeassign.html?cid=${cid }">
+            <button class="btn btn-success btn-large">添加编程作业</button></a>
                 <h4 class="widgettitle">作业列表</h4>
                 <table id="dyntable" class="table table-bordered responsive">
                     <colgroup>
@@ -63,8 +49,7 @@
                         <col class="con0" />
                         <col class="con1" />
                         <col class="con0" />
-                        <col class="con1" />
-                        <col class="con0" />
+                        
                     </colgroup>
                     <thead>
                         <tr>
@@ -72,33 +57,36 @@
                             <th class="head0 center">作业标题</th>
                             <th class="head1 center">起始日期</th>
                             <th class="head0 center">截止日期</th>
-							<th class="head1 center">时间限制</th>
+							<th class="head0 center">时间限制</th>
 							<th class="head0 center">空间限制</th>
-							
-                            <th class="head1 center">状态/分数</th>
+							<th class="head1 center">学生总人数</th>
+							<th class="head0 center">上交总人数</th>
+                            
                             <th class="head0 center">操作</th>
                         </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${list }" var="ls">
-                    
-                        <tr class="gradeX">
+                    <c:forEach items="${codelist}" var="list">
+                    	<tr class="gradeX">
                           <td class="aligncenter"><span class="center">
                             <input type="checkbox" />
                           </span></td>
-                            <td class="center">${ls[1] }</td>
-                            <td class="center">${ls[2] }</td>
-                            <td class="center">${ls[3] }</td>
-							<td class="center">${ls[4] }</td>
-							<td class="center">${ls[5] }</td>
-							<td class="center">${ls[6] }-${ls[7] }</td>
+                            <td class="center"><a href="showcodeassign.html?pid=${list[0]}&cid=${cid}">${list[1] }</a></td>
+                            <td class="center">${list[2] }</td>
+                            <td class="center">${list[3] }</td>
+							<td class="center">${list[4] }</td>
+							<td class="center">${list[5] }K</td>
+							<td class="center">${list[6] }</td>
+							<td class="center">${list[7] }</td>
 							
                             <td class="center">
-								<a href="stucodedescassign.html?cid=${cid }&pid=${ls[8] }">查看</a>
+								<a href="codedescassign.html?pid=${list[0]}&cid=${cid}">查看</a>
 								</td>
                         
                         </tr>
-                        </c:forEach>
+                    </c:forEach>
+                        
+                       
                        
                     </tbody>
                 </table>

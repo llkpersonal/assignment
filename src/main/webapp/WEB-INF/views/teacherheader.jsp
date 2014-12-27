@@ -195,7 +195,7 @@
                 		 uri.indexOf("teachercodeassign")!=-1||
                          uri.indexOf("teachercodedescassign")!=-1||uri.indexOf("teachercodeperassign")!=-1||
                          uri.indexOf("teachergivecodeassign")!=-1||uri.indexOf("teachershowcodeassign")!=-1||
-                         uri.indexOf("teachershowtestcase")!=-1||uri.indexOf("teacheraddtestcase")!=-1
+                         uri.indexOf("teachershowtestcase")!=-1||uri.indexOf("teacheraddtestcase")!=-1||uri.indexOf("codedescassign")!=-1
                 		 ) {
                 	 out.print("active"); 
                  }
@@ -207,7 +207,7 @@
                 		 uri.indexOf("teachercodeassign")!=-1||
                          uri.indexOf("teachercodedescassign")!=-1||uri.indexOf("teachercodeperassign")!=-1||
                          uri.indexOf("teachergivecodeassign")!=-1||uri.indexOf("teachershowcodeassign")!=-1||
-                         uri.indexOf("teachershowtestcase")!=-1||uri.indexOf("teacheraddtestcase")!=-1
+                         uri.indexOf("teachershowtestcase")!=-1||uri.indexOf("teacheraddtestcase")!=-1||uri.indexOf("codedescassign")!=-1
                 		 ) {
                 	 out.print("style=\"display: block\""); 
                  }
@@ -218,7 +218,7 @@
                         <li <%if(uri.indexOf("teachercodeassign")!=-1||
                         uri.indexOf("teachercodedescassign")!=-1||uri.indexOf("teachercodeperassign")!=-1||
                         uri.indexOf("teachergivecodeassign")!=-1||uri.indexOf("teachershowcodeassign")!=-1||
-                        uri.indexOf("teachershowtestcase")!=-1||uri.indexOf("teacheraddtestcase")!=-1) 
+                        uri.indexOf("teachershowtestcase")!=-1||uri.indexOf("teacheraddtestcase")!=-1 ||uri.indexOf("codedescassign")!=-1)
                         	out.print("class=\"active\""); %>><a href="teachercodeassign.html?cid=${cid}">编程作业</a></li>
                     </ul>
                 </li>

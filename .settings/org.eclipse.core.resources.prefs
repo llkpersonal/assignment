@@ -1,3 +1,6 @@
 eclipse.preferences.version=1
 encoding//src/main/webapp/WEB-INF/views/adminuserman.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/teachercodeassign.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/teachergivecodeassign.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/views/teacherhomepage.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/teachershowtestcase.jsp=UTF-8

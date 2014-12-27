@@ -54,6 +54,10 @@ public class Course {
 	@JoinTable(name="study",joinColumns = {@JoinColumn(name="cid")},inverseJoinColumns = {@JoinColumn(name="uid")})
 	private Set<User> students;
 	
+	@OneToMany(mappedBy = "pid" , cascade = CascadeType.ALL)
+	private Set<Problem> problems;
+	
+	
 	public int getCid() {
 		return cid;
 	}
@@ -132,5 +136,13 @@ public class Course {
 
 	public void setStudents(Set<User> students) {
 		this.students = students;
+	}
+
+	public Set<Problem> getProblems() {
+		return problems;
+	}
+
+	public void setProblems(Set<Problem> problems) {
+		this.problems = problems;
 	}
 }
