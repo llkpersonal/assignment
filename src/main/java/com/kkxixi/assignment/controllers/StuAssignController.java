@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kkxixi.assignment.entities.Assign;
+import com.kkxixi.assignment.entities.Attachment;
 import com.kkxixi.assignment.entities.Course;
 import com.kkxixi.assignment.entities.Grade;
 import com.kkxixi.assignment.entities.User;
@@ -60,6 +61,11 @@ public class StuAssignController {
 		query.setString("aid", Integer.toString(aid));
 		List list = query.list();
 		model.addObject("assignlist", list.get(0));
+		
+		query = session.createQuery("from Attachment where aid=:aid");
+		query.setString("aid", Integer.toString(aid));
+		List<Attachment> att = query.list();
+		model.addObject("list",att);
 		session.close();
 		return model;
 	}

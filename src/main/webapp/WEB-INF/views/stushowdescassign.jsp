@@ -70,10 +70,10 @@
                             <p>
                                 <label>附件列表</label>
                                 <span class="field">
-									
-									<input type="checkbox" /> lala.txt<br />
-                                     <input type="checkbox" /> my.jpg<br/>
-									<a href class="btn"><i class="iconsweets-link"></i>下载</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href class="btn btn-primary"><i class="iconsweets-magnifying iconsweets-white"></i>在线预览</a>
+                                <c:forEach items="${list }" var="ls" >
+									<a href="download/${ls.attachmentid }">${ls.filename }</a>
+								</c:forEach>
+								<br />
                                </span>
 								
                             </p>

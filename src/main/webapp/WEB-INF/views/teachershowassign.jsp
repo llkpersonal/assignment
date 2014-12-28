@@ -40,7 +40,7 @@ function getassigninfo(aid){
 			jQuery("#assigncontent1").text(data["assigncontent"]);
 			jQuery("#start1").text(data["start"]);
 			jQuery("#deadline1").text(data["deadline"]);
-			
+			jQuery("#attachment").text(data["attachment"]);
 		}
 	});
 }
@@ -202,7 +202,7 @@ function submit_assign_info(){
 			  <tr>
                        
                             <td class="center">附件名称</td>
-                            <td class="center">啦啦啦.txt</td>
+                            <td class="center" id="attachment"></td>
                           
                             
                         </tr>
@@ -246,21 +246,7 @@ function submit_assign_info(){
                             <span class="field"><input id="deadline" type="text" name="input4" class="input-xlarge" /></span>
                         </div>
                                     
-			<div class="par">
-			    <label>添加附件</label>
-			    <div class="fileupload fileupload-new" data-provides="fileupload">
-				<div class="input-append">
-				<div class="uneditable-input span3">
-				    <i class="iconfa-file fileupload-exists"></i>
-				    <span class="fileupload-preview"></span>
-				</div>
-				<span class="btn btn-file"><span class="fileupload-new">附件</span>
-				<span class="fileupload-exists">修改</span>
-				<input type="file" /></span>
-				<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">移除</a>
-				</div>
-			    </div>
-			</div>
+			
                         
           
       </div>

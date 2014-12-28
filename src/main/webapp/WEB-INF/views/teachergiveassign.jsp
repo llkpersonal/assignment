@@ -12,7 +12,7 @@ window.onload = function(){
 	jQuery("#timepicker2").timepicker();
 };
 
-
+/*
 function btnclick(){
 	//alert("111111");
 	var assignhead = jQuery("#assignhead").val(), assigncontent = jQuery("#assigncontent").val(),
@@ -43,7 +43,7 @@ function btnclick(){
 			}
 		}
 	});
-}
+}*/
 
 
 
@@ -87,42 +87,42 @@ function btnclick(){
             <div class="widget">
             <h4 class="widgettitle">布置作业</h4>
             <div class="widgetcontent">
-                <form onsubmit="btnclick()" action="getattach" method="post" class="stdform" enctype="multipart/form-data">
+                <form  action="getattach" method="post" class="stdform" enctype="multipart/form-data">
 
                    
                         
                         <p>
                         	<label>作业标题</label>
-                            <span class="field"><input type="text" name="input4" class="input-xlarge" id="assignhead" /></span>
+                            <span class="field"><input type="text" name=assignhead class="input-xlarge" id="assignhead" /></span>
                         </p>
                        
                         <p>
                             <label>作业内容</label>
-                            <span class="field"><textarea cols="80" rows="5" class="span5" id="assigncontent"></textarea></span> 
+                            <span class="field"><textarea cols="80" rows="5" class="span5" name="assigncontent" id="assigncontent"></textarea></span> 
                         </p>
 						
 						 <div class="par">
                             <label>起始日期</label>
-                            <span class="field"><input id="datepicker1" type="text" name="date" class="input-small"/></span>
+                            <span class="field"><input id="datepicker1" type="text" name="datepicker1" class="input-small"/></span>
                         </div> 
                          
                         <div class="par">
                             <label>起始时间</label>
                             <div id="timepicker" class="input-append bootstrap-timepicker">
-				<input id="timepicker2" type="text" class="input-small" />
+				<input id="timepicker2" name="timepicker2" type="text" class="input-small" />
 				<span class="add-on"><i class="iconfa-time"></i></span>
 			    </div>
                         </div>
 						
                         <div class="par">
                             <label>截止日期</label>
-                            <span class="field"><input id="datepicker" type="text" name="date" class="input-small" data-date-format="yyyy-mm-dd" /></span>
+                            <span class="field"><input id="datepicker" type="text" name="datepicker" class="input-small" data-date-format="yyyy-mm-dd" /></span>
                         </div> 
                          <input type="hidden" id="course_id" value="${cid }" />
                         <div class="par">
                             <label>截止时间</label>
                             <div id="timepicker" class="input-append bootstrap-timepicker">
-				<input id="timepicker1" type="text" class="input-small" />
+				<input id="timepicker1" name="timepicker1" type="text" class="input-small" />
 				<span class="add-on"><i class="iconfa-time"></i></span>
 			    </div>
                         </div>

@@ -1,12 +1,16 @@
 package com.kkxixi.assignment.controllers;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
 
@@ -16,6 +20,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kkxixi.assignment.entities.Assign;
+import com.kkxixi.assignment.entities.Attachment;
 import com.kkxixi.assignment.entities.Course;
 import com.kkxixi.assignment.entities.Grade;
 import com.kkxixi.assignment.entities.User;
@@ -138,12 +144,17 @@ public class TeacherAssignController{
 		Query query = session.createQuery("from Assign where aid=:aid");
 		query.setString("aid", Integer.toString(aid));
 		List<Assign> list = query.list();
-		session.close();
+		
 		Assign assign = list.get(0);
 		
+		query = session.createQuery("from Attachment where aid=:aid");
+		query.setString("aid", Integer.toString(aid));
+		Attachment att = (Attachment)query.list().get(0);
+		
+		session.close();
 		return "{\"assignhead\":\""+assign.getHead()+"\",\"assigncontent\":\""+assign.getContent()+
 				"\","+ "\"start\":\""+assign.getStart()+"\",\"deadline\":\""+assign.getDeadline()+
-				"\"}";
+				"\",\"attachment\":\""+att.getFilename()+"\"}";
 	}
 	
 	@RequestMapping(value="/modifyassign",method=RequestMethod.POST)
@@ -278,22 +289,128 @@ public class TeacherAssignController{
 		
 	}
 	@RequestMapping(value="/getattach")
-	public String getattach(@RequestParam(value="fileupload")MultipartFile file,@RequestParam(value="cid")int cid	){
-		if(!file.isEmpty()){
-			System.out.println("========================================================");
-			System.out.println(file.getOriginalFilename());
-			System.out.println("========================================================");
-			try{
-				byte[] bytes = file.getBytes();
-				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File("E:\\"+file.getOriginalFilename())));
-                stream.write(bytes);
-                stream.close();
-			} catch (Exception e){
-				return "failed";
-			}
+	public String getattach(@RequestParam(value="assignhead")String assignhead,@RequestParam(value="assigncontent")String assigncontent,@RequestParam(value="datepicker")String datepicker,
+			@RequestParam(value="timepicker1")String timepicker1,
+			@RequestParam(value="datepicker1")String datepicker1,
+			@RequestParam(value="timepicker2")String timepicker2,
+			@RequestParam(value="cid")int cid,
+			HttpServletRequest request,
+			@RequestParam(value="fileupload")MultipartFile file
+			){
+		Assign assign = new Assign();
+		assign.setContent(assigncontent);
+		assign.setHead(assignhead);
+		//修改起始日期格式
+		String date1[] = datepicker1.split("/");
+		datepicker1= date1[2]+"-"+date1[0]+"-"+date1[1];
+		String time1[] = timepicker2.split(" ");
+		if( time1[1].equals("AM") ){
+			timepicker2= time1[0];
+		} else {
+			String times[] = time1[0].split(":");
+			timepicker2= Integer.toString(Integer.parseInt(times[0])+12)+":"+times[1];
 		}
+
+		assign.setStart(datepicker1+" "+timepicker2);
+		//修改截止日期格式
+		String date[] = datepicker.split("/");
+		datepicker= date[2]+"-"+date[0]+"-"+date[1];
+		String time[] = timepicker1.split(" ");
+		if( time[1].equals("AM") ){
+			timepicker1= time[0];
+		} else {
+			String times[] = time[0].split(":");
+			timepicker1= Integer.toString(Integer.parseInt(times[0])+12)+":"+times[1];
+		}
+
+		assign.setDeadline(datepicker+" "+timepicker1);
+		//assign.setCourse(cid);
+		Session session = sessionFactory.openSession();
+		
+		Query query1 = session.createQuery("from Course as course where course.cid=:cid");
+		query1.setParameter("cid", cid);
+		List<Course> ls = query1.list();
+		Course cs = ls.get(0);
+		
+		assign.setCourse(cs);	
+		
+				
+		
+		Transaction tx = session.beginTransaction();
+		session.save(assign);
+		
+		if(!file.isEmpty()){
+			
+			Attachment attachment = new Attachment();
+			attachment.setAid(assign.getAid());
+			attachment.setFilename(file.getOriginalFilename());
+			String ctxPath = request.getSession().getServletContext().getRealPath("/")+"\\"+"upload\\";
+			attachment.setFilepath(ctxPath);
+			System.out.println("路径:"+ctxPath);
+			session.save(attachment);
+			File uploadfile = new File(ctxPath+"/"+attachment.getAttachmentid());
+				try {
+					byte[] bytes = file.getBytes();
+					BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(uploadfile));
+	                stream.write(bytes);
+	                stream.close();
+				} catch (IllegalStateException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+		}
+		
+		
+		
+		tx.commit();
+		session.close();
 		return "redirect:/ teachergiveassign.html?cid="+cid;
 	}
 	
+	
+	@RequestMapping("/download/{fileName}")  
+    public ModelAndView download(@PathVariable("fileName")  
+    String fileName, HttpServletRequest request, HttpServletResponse response)  
+            throws Exception {  
+		Session session = sessionFactory.openSession();
+		Query q = session.createQuery("from Attachment where attachmentid=:id");
+		q.setString("id", fileName);
+		Attachment att = (Attachment) q.list().get(0);
+        response.setContentType("text/html;charset=utf-8");  
+        request.setCharacterEncoding("UTF-8");  
+        java.io.BufferedInputStream bis = null;  
+        java.io.BufferedOutputStream bos = null;  
+  
+        String ctxPath = request.getSession().getServletContext().getRealPath(  
+                "/")  
+                + "\\" + "upload\\";  
+        String downLoadPath = ctxPath + fileName;  
+        System.out.println(downLoadPath);  
+        try {  
+            long fileLength = new File(downLoadPath).length();  
+            response.setContentType("application/x-msdownload;");  
+            response.setHeader("Content-disposition", "attachment; filename="  
+                    + att.getFilename());  
+            response.setHeader("Content-Length", String.valueOf(fileLength));  
+            bis = new BufferedInputStream(new FileInputStream(downLoadPath));  
+            bos = new BufferedOutputStream(response.getOutputStream());  
+            byte[] buff = new byte[2048];  
+            int bytesRead;  
+            while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {  
+                bos.write(buff, 0, bytesRead);  
+            }  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+        } finally {  
+            if (bis != null)  
+                bis.close();  
+            if (bos != null)  
+                bos.close();  
+            session.close();
+        }  
+        
+        return null;  
+    }  
 }
 
