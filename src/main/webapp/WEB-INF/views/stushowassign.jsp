@@ -10,8 +10,8 @@
         
          <ul class="breadcrumbs">
             <li><a href="stuhomepage.html"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
-            <li><a href="stushowassign.html&cid={$cid}">作业管理</a> <span class="separator"></span></li>
-            <li><a href="stushowassign.html&cid={$cid}">查看/提交作业</a>></li>
+            <li><a href="stushowassign.html?cid=${cid}">作业管理</a> <span class="separator"></span></li>
+            <li><a href="stushowassign.html?cid=${cid}">查看/提交作业</a>></li>
              
             <li class="right">
                 <a href="" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-tint"></i>皮肤</a>
@@ -74,11 +74,10 @@
                             
                                 <a id="topic" href="stushowdescassign.html?aid=${assign[4]}&cid=${cid}" data-placement="top" data-toggle="tooltip" data-original-title="Click me to view topic page">查看</a>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <!-- <td class="center">
-								<a href="stugiveassign.html?aid=${assign[4]}&cid=${cid}">
+                                <!-- 
 								<c:choose>
-									<c:when test="${desc[5]==0 }">未批改</c:when>
-									<c:otherwise>${desc[6] }</c:otherwise>
+									<c:when test="${desc[5]==0 }">修改</c:when>
+									<c:otherwise></c:otherwise>
 								</c:choose>
 								</a>
 								</td>-->

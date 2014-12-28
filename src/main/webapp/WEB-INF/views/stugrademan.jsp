@@ -6,32 +6,13 @@
 	<c:param name="title" value="成绩管理" />
 </c:import>
 
-<script type="text/javascript">
-    jQuery(document).ready(function(){
-        // dynamic table
-        jQuery('#dyntable').dataTable({
-            "sPaginationType": "full_numbers",
-            "aaSortingFixed": [[0,'asc']],
-            "fnDrawCallback": function(oSettings) {
-                jQuery.uniform.update();
-            }
-        });
-        
-        jQuery('#dyntable2').dataTable( {
-            "bScrollInfinite": true,
-            "bScrollCollapse": true,
-            "sScrollY": "300px"
-        });
-        
-    });
-	
-</script>
+
 
     <div class="rightpanel">
         
          <ul class="breadcrumbs">
             <li><a href="stuhomepage.html"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
-            <li><a href="stugrademan.html">成绩管理</a></li>
+            <li><a href="stugrademan.html?cid=${cid}">成绩管理</a></li>
            
              
             <li class="right">
@@ -85,59 +66,24 @@
                         </tr>
                     </thead>
                     <tbody>
+                    <c:forEach items="${gradelist}" var="grade" >
                         <tr class="gradeX">
                           <td class="aligncenter"><span class="center">
                             <input type="checkbox" />
                           </span></td>
-                            <td class="center">第一次作业</td>
-                            <td class="center">2014.10.10</td>
-                            <td class="center">2014.10.28</td>
-							<td class="center">50</td>
+                            <td class="center">${grade[0]}</td>
+                            <td class="center">${grade[1]}</td>
+                            <td class="center">${grade[2]}</td>
+							<td class="center">${grade[3]}</td>
 							
 							
                             <td class="center">
-								<a href="stugradedesc.html">查看</a>
+								<a href="stugradedesc.html?aid=${grade[4]}&cid=${cid}">查看</a>
 								</td>
                         
                         </tr>
-                        <tr class="gradeC">
-                          <td class="aligncenter"><span class="center">
-                            <input type="checkbox" />
-                          </span></td>
-                            <td class="center">第二次作业</td>
-                            <td class="center">2014.10.10</td>
-                            <td class="center">2014.10.28</td>
-							<td class="center">50</td>
-							<td class="center">
-								<a href="stugradedesc.html">查看</a>
-								</td>
-                        </tr>
-                        <tr class="gradeA">
-                          <td class="aligncenter"><span class="center">
-                            <input type="checkbox" />
-                          </span></td>
-                            <td class="center">第三次作业</td>
-                            <td class="center">2014.10.10</td>
-                            <td class="center">2014.10.28</td>
-							<td class="center">50</td>
-							<td class="center">
-								<a href="stugradedesc.html">查看</a>
-								</td>
-                        </tr>
-                        <tr class="gradeA">
-                         <td class="aligncenter"><span class="center">
-                            <input type="checkbox" />
-                          </span></td>
-                            <td class="center">第一次作业</td>
-                            <td class="center">2014.10.10</td>
-                            <td class="center">2014.10.28</td>
-							<td class="center">50</td>
-							<td class="center">
-								<a href="stugradedesc.html">查看</a>
-								</td>
-                        </tr>
                         
-                       
+                     </c:forEach>  
                     </tbody>
                 </table>
                 

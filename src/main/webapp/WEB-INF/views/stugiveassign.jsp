@@ -5,10 +5,10 @@
 <c:import url="stuheader.jsp">
 	<c:param name="title" value="提交作业" />
 </c:import>
-<script type="text/javascript">
+<!--  <script type="text/javascript">
 jQuery(document).ready(function(){
 	jQuery("#btn_submit").click(function(){
-		var assigncontent = jQuery("#assigncontent").val(), assignstucontent = jQuery("#assignstucontent").val(), aid=${aid};
+		var assigncontent = jQuery("#assigncontent").val(), assignstucontent = jQuery("#assignstucontent").val(), fileupload = jQuery("#fileupload").val(),aid=${aid};
 		//alert("000");
 		jQuery.ajax({
 			type : "POST",
@@ -18,20 +18,24 @@ jQuery(document).ready(function(){
 			data : {
 				"assigncontent" : assigncontent,
 				"assignstucontent" : assignstucontent,
+				"fileupload" : fileupload,
 				"aid" : aid,
 			},
 			success : function(data) {
 				if (data["status"] == "failed") {
 					alert("发送失败！");
-				} else {
+				} else if(data["status"] == "checked"){
+					alert("作业已批改 无法进行修改");
+				}else if(data["status"] == "ok"){
 					alert("发送成功！");
 					location.href = "stushowassign?cid=${cid}";
 				}
+				
 			}
 		});
 	});
 });
-</script>
+</script>-->
     <div class="rightpanel">
         
          <ul class="breadcrumbs">
@@ -71,7 +75,7 @@ jQuery(document).ready(function(){
             <div class="widget">
             <h4 class="widgettitle">提交作业</h4>
             <div class="widgetcontent">
-                <div class="stdform">
+            <form  action="subassign" method="post" class="stdform" enctype="multipart/form-data">
                         <p>
                         	<label>作业标题</label>
                             <span class="field"><input id="assigncontent" type="text" name="assigncontent" class="input-xlarge" /></span>
@@ -83,7 +87,8 @@ jQuery(document).ready(function(){
                         </p>
 			
                      
-                                    
+            <input type="hidden" name="cid" value="${cid}" />
+            <input type="hidden" name="aid" value="${aid}" />       
 			<div class="par">
 			    <label>添加附件</label>
 			    <div class="fileupload fileupload-new" data-provides="fileupload">
@@ -94,7 +99,7 @@ jQuery(document).ready(function(){
 				</div>
 				<span class="btn btn-file"><span class="fileupload-new">附件</span>
 				<span class="fileupload-exists">修改</span>
-				<input type="file" /></span>
+				<input name="fileupload" type="file" /></span>
 				<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">移除</a>
 				</div>
 			    </div>
@@ -105,7 +110,7 @@ jQuery(document).ready(function(){
                                 <button type="reset" class="btn">重置</button>
                             </p>  
                         
-                </div>
+                </form>>
             </div><!--widgetcontent-->
             </div><!--widget-->
             

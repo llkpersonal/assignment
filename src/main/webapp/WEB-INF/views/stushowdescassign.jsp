@@ -10,9 +10,9 @@
         
          <ul class="breadcrumbs">
             <li><a href="stuhomepage.html"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
-            <li><a href="stushowassign.html">作业管理</a> <span class="separator"></span></li>
-            <li><a href="stushowassign.html">查看作业</a> <span class="separator"></span></li>
-            <li><a href="stushowdescassign.html">作业详情</a></li>
+            <li><a href="stushowassign.html?cid=${cid}">作业管理</a> <span class="separator"></span></li>
+            <li><a href="stushowassign.html?cid=${cid}">查看作业</a> <span class="separator"></span></li>
+            <li><a href="stushowdescassign.html?aid=${aid }&cid=${cid}">作业详情</a></li>
 			 
             <li class="right">
                 <a href="" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-tint"></i>皮肤</a>
@@ -46,7 +46,7 @@
             <h4 class="widgettitle">作业详情</h4>
             <div class="widgetcontent nopadding">
           
-                        <form class="stdform stdform2" method="post" action="stushowdescassign.html">
+                        <form class="stdform stdform2" method="post" action="stushowdescassign.html?aid=${aid }&cid=${cid}">
                             <p>
                                 <label>作业标题</label>
                                 <span class="field"><input type="text" name="assigntitle" id="assigntitle2" class="input-xxlarge" placeholder="${assignlist[0]}" readonly /></span>

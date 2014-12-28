@@ -1,5 +1,9 @@
 package com.kkxixi.assignment.controllers;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kkxixi.assignment.entities.Assign;
@@ -42,12 +47,11 @@ public class StuAssignController {
 		query.setString("cid", Integer.toString(cid));
 		List list = query.list();
 		model.addObject("assignlist", list);
-		session.close();	
-		
+		session.close();
 		return model;
 	}
-	//,cid=${cid}
-	//,@RequestParam(value="cid")int cid
+
+	
 	@RequestMapping(value="/stushowdescassign")
 	public ModelAndView stuShowDescassign(HttpServletRequest request,@RequestParam(value="aid")int aid,@RequestParam(value="cid")int cid){
 		ModelAndView model = new ModelAndView();
@@ -80,42 +84,145 @@ public class StuAssignController {
 	}
 	
 	@RequestMapping(value="/subassign",method=RequestMethod.POST)
-	public @ResponseBody String subAssign(@RequestParam(value="assigncontent")String assigncontent,@RequestParam(value="assignstucontent")String assignstucontent,@RequestParam(value="aid")int aid,
+	public String subAssign(@RequestParam(value="assigncontent")String assigncontent,@RequestParam(value="assignstucontent")String assignstucontent,
+			@RequestParam(value="aid")int aid,
+			@RequestParam(value="cid")int cid,
+			@RequestParam(value="fileupload")MultipartFile file,
 			HttpServletRequest request)throws UnsupportedEncodingException{
-		Grade grade = new Grade();
-		grade.setTittle(assigncontent);
-		grade.setStucontent(assignstucontent);
-
-		//assign.setCourse(cid);
+		
 		Session session = sessionFactory.openSession();
-		
-		Query query = session.createQuery("from Assign as assign where assign.aid=:aid");
-		query.setString("aid", Integer.toString(aid));
-		List<Assign> ls = query.list();
-		Assign us = ls.get(0);
-		grade.setAid(us);
-		
 		Cookie [] cookies = request.getCookies();
 		for(int i=0;i<cookies.length;i++)
 		{
-			if(cookies[i].getName().equals("username"))
+			if(cookies[i].getName().equals("uid"))
 			{
+				String uid = cookies[i].getValue();
+				Query search = session.createQuery("from Grade where aid=:aid and uid=:uid");
+				search.setString("aid", Integer.toString(aid));
+				search.setString("uid", uid);
+				List<Grade> stateList = search.list();
+				if(stateList.isEmpty())
+				{
+					Grade grade = new Grade();
+					grade.setTittle(assigncontent);
+					grade.setStucontent(assignstucontent);
+					
+					Query query = session.createQuery("from Assign as assign where assign.aid=:aid");
+					query.setString("aid", Integer.toString(aid));
+					List<Assign> ls = query.list();
+					Assign us = ls.get(0);
+					grade.setAid(us);
+					
+					for(int j=0;j<cookies.length;j++)
+					{
+						if(cookies[j].getName().equals("username"))
+						{
+							
+							String studentName = cookies[j].getValue();
+							Query nameQuery = session.createQuery("from User as user where user.username=:studentName");
+							nameQuery.setParameter("studentName",studentName);
+							List<User> senderList = nameQuery.list();
+							User student = senderList.get(0);
+							grade.setUid(student);
+						}
+						
+					}
+					Transaction tx = session.beginTransaction();
+					session.save(grade);
+					
+					if(!file.isEmpty()){
+						
+						Attachment attachment = new Attachment();
+						attachment.setAid(aid);
+						attachment.setFilename(file.getOriginalFilename());
+						String ctxPath = request.getSession().getServletContext().getRealPath("/")+"\\"+"upload\\";
+						attachment.setFilepath(ctxPath);
+						System.out.println("路径:"+ctxPath);
+						session.save(attachment);
+						File uploadfile = new File(ctxPath+"/"+attachment.getAttachmentid());
+							try {
+								byte[] bytes = file.getBytes();
+								BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(uploadfile));
+				                stream.write(bytes);
+				                stream.close();
+							} catch (IllegalStateException | IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							
+					}
+					tx.commit();
+					session.close();
+					//return "{\"status\":\"ok\"}";
+				}
+				else
+				{
+					Grade existence = stateList.get(0);
+					int gradestate = existence.getState();
+					if(gradestate==0)
+					{
+						existence.setTittle(assigncontent);
+						existence.setStucontent(assignstucontent);
+						
+						Query query = session.createQuery("from Assign as assign where assign.aid=:aid");
+						query.setString("aid", Integer.toString(aid));
+						List<Assign> ls = query.list();
+						Assign us = ls.get(0);
+						existence.setAid(us);
+						
+						for(int j=0;j<cookies.length;j++)
+						{
+							if(cookies[j].getName().equals("username"))
+							{
+								
+								String studentName = cookies[j].getValue();
+								Query nameQuery = session.createQuery("from User as user where user.username=:studentName");
+								nameQuery.setParameter("studentName",studentName);
+								List<User> senderList = nameQuery.list();
+								User student = senderList.get(0);
+								existence.setUid(student);
+							}
+							
+						}
+						Transaction tx = session.beginTransaction();
+						session.save(existence);
+						
+						if(!file.isEmpty()){
+							
+							Attachment attachment = new Attachment();
+							attachment.setAid(aid);
+							attachment.setFilename(file.getOriginalFilename());
+							String ctxPath = request.getSession().getServletContext().getRealPath("/")+"\\"+"upload\\";
+							attachment.setFilepath(ctxPath);
+							System.out.println("路径:"+ctxPath);
+							session.save(attachment);
+							File uploadfile = new File(ctxPath+"/"+attachment.getAttachmentid());
+								try {
+									byte[] bytes = file.getBytes();
+									BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(uploadfile));
+					                stream.write(bytes);
+					                stream.close();
+								} catch (IllegalStateException | IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								
+						}
+						tx.commit();
+						session.close();
+						
+					}else
+					{
+						//return "{\"status\":\"checked\"}";
+						
+					}
+					
+				}
 				
-				String senderName = cookies[i].getValue();
-				Query nameQuery = session.createQuery("from User as user where user.username=:senderName");
-				nameQuery.setParameter("senderName",senderName);
-				List<User> senderList = nameQuery.list();
-				User sender = senderList.get(0);
-				grade.setUid(sender);
 			}
-			
 		}
+		//return "{\"status\":\"failed\"}";
+		return "redirect:/ stushowassign.html?cid="+cid;
 		
-		
-		Transaction tx = session.beginTransaction();
-		session.save(grade);
-		tx.commit();
-		session.close();
-		return "{\"status\":\"ok\"}";
 	}
 }
