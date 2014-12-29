@@ -31,6 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kkxixi.assignment.entities.Attachment;
 import com.kkxixi.assignment.entities.User;
+import com.kkxixi.assignment.utils.MD5Util;
 
 @Controller
 public class AdminUserController {
@@ -177,7 +178,7 @@ public class AdminUserController {
 						User us = new User();
 						us.setUsername(users[2]);
 						us.setName(users[0]);
-						us.setPassword(users[3]);
+						us.setPassword(MD5Util.MD5(users[3]));
 						us.setUsertype(users[1]);
 						Query query = session.createQuery("from User where username=:username");
 						

@@ -40,7 +40,7 @@ public class StuCodeassignController {
 										" left join problems on 1=1 "+
 										" left join ( "+
 										" select uid,verdict,accnt/submitcnt*100 as score from( "+
-										" select pid,count(*) as submitcnt from testcases group by pid)q,(select submissions.runid,ifnull(accnt,0) as accnt from submissions left join (select runid,count(*) as accnt from submissions where verdict='AC' group by runid)sq on sq.runid=submissions.runid)qq,submissions "+
+										" select pid,count(*) as submitcnt from testcases group by pid)q,(select submissions.runid,ifnull(accnt,0) as accnt from submissions left join (select rid,count(*) as accnt from testresults where verdict='AC' group by rid)sq on sq.rid=submissions.runid)qq,submissions "+
 										" where q.pid=submissions.problem and qq.runid=submissions.runid)s "+
 										" on s.uid=user.uid "+
 										" where user.uid=:uid");

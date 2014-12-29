@@ -129,7 +129,10 @@ function submit_score_info(){
 								<br />
                                </span>
                             </p>
-                                                    
+                                     <p class="stdformbutton">
+-                                <button onclick="submit_score_info()" class="btn btn-primary">确认</button>
+-                                <button type="reset" class="btn">取消</button>
+-                            </p>               
                     </div>
             </div><!--widgetcontent-->
             </div><!--widget-->
