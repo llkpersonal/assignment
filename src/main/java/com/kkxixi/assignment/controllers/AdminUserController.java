@@ -1,5 +1,14 @@
 package com.kkxixi.assignment.controllers;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -17,8 +26,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kkxixi.assignment.entities.Attachment;
 import com.kkxixi.assignment.entities.User;
 
 @Controller
@@ -138,5 +149,57 @@ public class AdminUserController {
 		tx.commit();
 		session.close();
 		return "{\"status\":\"ok\"}";
+	}
+	
+	@RequestMapping(value="/uploaduser")
+	public String uploaduser(HttpServletRequest request,@RequestParam(value="fileupload")MultipartFile file){	
+		if(!file.isEmpty()){
+				String ctxPath = request.getSession().getServletContext().getRealPath("/")+"\\"+"upload\\";
+				System.out.println("路径:"+ctxPath);
+				File uploadfile = new File(ctxPath+"/"+file.getOriginalFilename());
+				try {
+					byte[] bytes = file.getBytes();
+					BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(uploadfile));
+	                stream.write(bytes);
+	                stream.close();
+				} catch (IllegalStateException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				 try {
+					Session session = sessionFactory.openSession();
+					Transaction tx = session.beginTransaction();
+					InputStreamReader isr = new InputStreamReader(new FileInputStream(uploadfile));
+					BufferedReader bf = new BufferedReader(isr);
+					String line = null;
+					while((line = bf.readLine())!=null){
+						String users[] = line.split("\t");
+						User us = new User();
+						us.setUsername(users[2]);
+						us.setName(users[0]);
+						us.setPassword(users[3]);
+						us.setUsertype(users[1]);
+						Query query = session.createQuery("from User where username=:username");
+						
+						query.setString("username",users[2]);
+						
+						List<User> list = query.list();
+						
+						if( list.size()!=0 ){
+							continue;
+						}
+						
+						session.save(us);
+					}
+					tx.commit();
+					session.close();
+					isr.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		
+		return "redirect:/ adminusermanage";
 	}
 }

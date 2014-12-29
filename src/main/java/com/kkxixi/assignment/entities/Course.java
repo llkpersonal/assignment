@@ -26,8 +26,11 @@ public class Course {
 	private int cid;
 	
 	@ManyToOne(targetEntity=User.class,cascade=CascadeType.ALL , optional = true)
-	@JoinColumn(name="teacher_uid")
+	@JoinColumn(name="teacher_uid",insertable=false,updatable=false)
 	private User teacher;
+	
+	@Column(name="teacher_uid")
+	private int teacher_uid;
 	
 	@Column(name="classroom")
 	private String classroom;
@@ -144,5 +147,13 @@ public class Course {
 
 	public void setProblems(Set<Problem> problems) {
 		this.problems = problems;
+	}
+
+	public int getTeacher_uid() {
+		return teacher_uid;
+	}
+
+	public void setTeacher_uid(int teacher_uid) {
+		this.teacher_uid = teacher_uid;
 	}
 }

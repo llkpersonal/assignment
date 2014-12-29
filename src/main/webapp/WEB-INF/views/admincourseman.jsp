@@ -134,7 +134,9 @@ function submit_course_info(){
                             <td class="center">
 								
 								<a data-toggle="modal" onclick="getcourseinfo(${course[6]})" data-target="#modifyModal">修改</a>
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<a href="adminimportnamelist?cid=${course[6]}">导入名单</a>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								<a data-toggle="modal" onclick="set_delete_id(${course[6]})" data-target="#deleteModal">删除</a></td>
                         
                         </tr>

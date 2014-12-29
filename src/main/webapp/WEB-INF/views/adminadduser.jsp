@@ -104,7 +104,6 @@ jQuery(document).ready(function(){
                             <select id="type" name="type" class="uniformselect">
                             	<option value="teacher">老师</option>
                                 <option value="student">学生</option>
-                                <option value="assistent">助教</option>
                                 <option value="admin">管理员</option>
                             </select>
                             </span>
@@ -116,29 +115,31 @@ jQuery(document).ready(function(){
                             </p>  
                             </div>
                             <h3><a href="#">批量添加</a></h3>
+                              <form  action="uploaduser" method="post" class="stdform" enctype="multipart/form-data">
                             <div>
                                 <div class="par">
 			    <label>上传附件</label>
-			    <div class="fileupload fileupload-new" data-provides="fileupload">
-				<div class="input-append">
-				<div class="uneditable-input span3">
-				    <i class="iconfa-file fileupload-exists"></i>
-				    <span class="fileupload-preview"></span>
+			  
+			    	<div class="fileupload fileupload-new" data-provides="fileupload">
+					<div class="input-append">
+					<div class="uneditable-input span3">
+					    <i class="iconfa-file fileupload-exists"></i>
+					    <span class="fileupload-preview"></span>
+					</div>
+					<span class="btn btn-file"><span class="fileupload-new">附件</span>
+					<span class="fileupload-exists">修改</span>
+					<input type="file" name="fileupload" /></span>
+					<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">移除</a>
+					</div>
+			   	 </div>
 				</div>
-				<span class="btn btn-file"><span class="fileupload-new">附件</span>
-				<span class="fileupload-exists">修改</span>
-				<input type="file" /></span>
-				<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">移除</a>
-				</div>
-			    </div>
-			</div>
                         
                       <p class="stdformbutton">
-                                <button class="btn btn-primary">添加</button>
+                                <button type="submit" class="btn btn-primary">添加</button>
                                 
                             </p>  
                             </div>
-                            
+                 </form>
                         </div><!--#accordion-->
                         
                        
