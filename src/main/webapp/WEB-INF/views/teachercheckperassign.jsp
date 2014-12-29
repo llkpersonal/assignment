@@ -120,21 +120,16 @@ function submit_score_info(){
                                 <label>作业分数</label>
                                 <span class="field"><input type="text" name="grade" id="grade2" class="input-large" placeholder="97"  /></span>
                             </p>
-                            <p>
+                             <p>
                                 <label>附件列表</label>
                                 <span class="field">
-									
-									<input type="checkbox" /> lala.txt<br />
-                                     <input type="checkbox" /> my.jpg<br/>
-									<a href class="btn"><i class="iconsweets-link"></i>下载</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href class="btn btn-primary"><i class="iconsweets-magnifying iconsweets-white"></i>在线预览</a>
+                                <c:forEach items="${idlist }" var="ls" >
+									<a href="downloadstu/${ls.stuattachmentid }">${ls.stufilename }</a>
+								</c:forEach>
+								<br />
                                </span>
-								
                             </p>
                                                     
-                            <p class="stdformbutton">
-                                <button onclick="submit_score_info()" class="btn btn-primary">确认</button>
-                                <button type="reset" class="btn">取消</button>
-                            </p>
                     </div>
             </div><!--widgetcontent-->
             </div><!--widget-->

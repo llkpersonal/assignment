@@ -32,6 +32,7 @@ import com.kkxixi.assignment.entities.Assign;
 import com.kkxixi.assignment.entities.Attachment;
 import com.kkxixi.assignment.entities.Course;
 import com.kkxixi.assignment.entities.Grade;
+import com.kkxixi.assignment.entities.Stuattachment;
 import com.kkxixi.assignment.entities.User;
 
 @Controller
@@ -220,6 +221,13 @@ public class TeacherAssignController{
 		model.addObject("aid",aid);
 		model.addObject("gid", gid);
 		model.addObject("head",head);
+		
+		Session session = sessionFactory.openSession();
+		Query idQuery = session.createQuery("from Stuattachment as stuattachment where stuattachment.gid=:gid");
+		idQuery.setString("gid", Integer.toString(gid));
+		List<Stuattachment> idList = idQuery.list();
+		model.addObject("idlist",idList);
+		session.close();
 		return model;
 		
 	}
@@ -269,6 +277,7 @@ public class TeacherAssignController{
 		return model;
 		
 	}
+	
 	@RequestMapping("/teachergradedesc")
 	public ModelAndView teachergradedesc(@RequestParam(value="cid")int cid,@RequestParam(value="aid")int aid,@RequestParam(value="head")String head)
 	{
@@ -288,6 +297,7 @@ public class TeacherAssignController{
 		return model;
 		
 	}
+	
 	@RequestMapping(value="/getattach")
 	public String getattach(@RequestParam(value="assignhead")String assignhead,@RequestParam(value="assigncontent")String assigncontent,@RequestParam(value="datepicker")String datepicker,
 			@RequestParam(value="timepicker1")String timepicker1,
@@ -412,5 +422,50 @@ public class TeacherAssignController{
         
         return null;  
     }  
+	
+	@RequestMapping("/downloadstu/{fileName}")  
+    public ModelAndView downloadstu(@PathVariable("fileName")  
+    String fileName, HttpServletRequest request, HttpServletResponse response)  
+            throws Exception {  
+		Session session = sessionFactory.openSession();
+		Query q = session.createQuery("from Stuattachment where stuattachmentid=:id");
+		q.setString("id", fileName);
+		Stuattachment att = (Stuattachment) q.list().get(0);
+        response.setContentType("text/html;charset=utf-8");  
+        request.setCharacterEncoding("UTF-8");  
+        java.io.BufferedInputStream bis = null;  
+        java.io.BufferedOutputStream bos = null;  
+  
+        String ctxPath = request.getSession().getServletContext().getRealPath(  
+                "/")  
+                + "\\" + "upload\\";  
+        String downLoadPath = ctxPath + fileName;  
+        System.out.println(downLoadPath);  
+        try {  
+            long fileLength = new File(downLoadPath).length();  
+            response.setContentType("application/x-msdownload;");  
+            response.setHeader("Content-disposition", "attachment; filename="  
+                    + att.getStufilename());  
+            response.setHeader("Content-Length", String.valueOf(fileLength));  
+            bis = new BufferedInputStream(new FileInputStream(downLoadPath));  
+            bos = new BufferedOutputStream(response.getOutputStream());  
+            byte[] buff = new byte[2048];  
+            int bytesRead;  
+            while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {  
+                bos.write(buff, 0, bytesRead);  
+            }  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+        } finally {  
+            if (bis != null)  
+                bis.close();  
+            if (bos != null)  
+                bos.close();  
+            session.close();
+        }  
+        
+        return null;  
+    }  
+	
 }
 

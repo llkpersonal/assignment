@@ -27,6 +27,7 @@ import com.kkxixi.assignment.entities.Assign;
 import com.kkxixi.assignment.entities.Attachment;
 import com.kkxixi.assignment.entities.Course;
 import com.kkxixi.assignment.entities.Grade;
+import com.kkxixi.assignment.entities.Stuattachment;
 import com.kkxixi.assignment.entities.User;
 
 @Controller
@@ -131,15 +132,19 @@ public class StuAssignController {
 					session.save(grade);
 					
 					if(!file.isEmpty()){
-						
-						Attachment attachment = new Attachment();
-						attachment.setAid(aid);
-						attachment.setFilename(file.getOriginalFilename());
+						Query idQuery = session.createQuery("from Grade as grade where grade.aid=:aid and grade.uid=:uid");
+						idQuery.setString("aid", Integer.toString(aid));
+						idQuery.setString("uid", uid);
+						List<Grade> idList = idQuery.list();
+						Grade il = idList.get(0);
+						Stuattachment attachment = new Stuattachment();
+						attachment.setGid(il.getGid());
+						attachment.setStufilename(file.getOriginalFilename());
 						String ctxPath = request.getSession().getServletContext().getRealPath("/")+"\\"+"upload\\";
-						attachment.setFilepath(ctxPath);
+						attachment.setStufilepath(ctxPath);
 						System.out.println("路径:"+ctxPath);
 						session.save(attachment);
-						File uploadfile = new File(ctxPath+"/"+attachment.getAttachmentid());
+						File uploadfile = new File(ctxPath+"/"+attachment.getStuattachmentid());
 							try {
 								byte[] bytes = file.getBytes();
 								BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(uploadfile));
@@ -188,15 +193,19 @@ public class StuAssignController {
 						session.save(existence);
 						
 						if(!file.isEmpty()){
-							
-							Attachment attachment = new Attachment();
-							attachment.setAid(aid);
-							attachment.setFilename(file.getOriginalFilename());
+							Query idQuery = session.createQuery("from Grade as grade where grade.aid=:aid and grade.uid=:uid");
+							idQuery.setString("aid", Integer.toString(aid));
+							idQuery.setString("uid", uid);
+							List<Grade> idList = idQuery.list();
+							Grade il = idList.get(0);
+							Stuattachment attachment = new Stuattachment();
+							attachment.setGid(il.getGid());
+							attachment.setStufilename(file.getOriginalFilename());
 							String ctxPath = request.getSession().getServletContext().getRealPath("/")+"\\"+"upload\\";
-							attachment.setFilepath(ctxPath);
+							attachment.setStufilepath(ctxPath);
 							System.out.println("路径:"+ctxPath);
 							session.save(attachment);
-							File uploadfile = new File(ctxPath+"/"+attachment.getAttachmentid());
+							File uploadfile = new File(ctxPath+"/"+attachment.getStuattachmentid());
 								try {
 									byte[] bytes = file.getBytes();
 									BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(uploadfile));
@@ -223,6 +232,6 @@ public class StuAssignController {
 		}
 		//return "{\"status\":\"failed\"}";
 		return "redirect:/ stushowassign.html?cid="+cid;
-		
 	}
+	
 }
