@@ -39,9 +39,9 @@ public class StuCodeassignController {
 										" from user " + 
 										" left join problems on 1=1 "+
 										" left join ( "+
-										" select uid,verdict,tested/submitcnt*100 as score from( "+
-										" select pid,count(*) as submitcnt from testcases group by pid)q,submissions "+
-										" where q.pid=submissions.problem)s "+
+										" select uid,verdict,accnt/submitcnt*100 as score from( "+
+										" select pid,count(*) as submitcnt from testcases group by pid)q,(select submissions.runid,ifnull(accnt,0) as accnt from submissions left join (select runid,count(*) as accnt from submissions where verdict='AC' group by runid)sq on sq.runid=submissions.runid)qq,submissions "+
+										" where q.pid=submissions.problem and qq.runid=submissions.runid)s "+
 										" on s.uid=user.uid "+
 										" where user.uid=:uid");
 		q.setString("uid", CookieUtil.getUid(request));
@@ -96,6 +96,9 @@ public class StuCodeassignController {
 		} else {
 			session.clear();
 			int runid = ls.get(0).getRunid();
+			Query query = session.createSQLQuery("DELETE FROM testresults WHERE rid=:rid");
+			query.setString("rid", Integer.toString(runid));
+			query.executeUpdate();
 			System.out.println("runid:"+runid);
 			submission.setRunid(runid);
 			System.out.println("seted!");
