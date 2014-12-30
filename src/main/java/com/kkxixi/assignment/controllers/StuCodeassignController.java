@@ -35,15 +35,7 @@ public class StuCodeassignController {
 		model.addObject("cid",cid);
 		model.setViewName("stucodeassign");
 		Session session = sessionFactory.openSession();
-		Query q = session.createSQLQuery("select user.uid,title,begindate,duedate,timelimit,memorylimit,ifnull(verdict,'未提交') as verdict,ifnull(score,0) as score,pid "+
-										" from user " + 
-										" left join problems on 1=1 "+
-										" left join ( "+
-										" select uid,verdict,accnt/submitcnt*100 as score from( "+
-										" select pid,count(*) as submitcnt from testcases group by pid)q,(select submissions.runid,ifnull(accnt,0) as accnt from submissions left join (select rid,count(*) as accnt from testresults where verdict='AC' group by rid)sq on sq.rid=submissions.runid)qq,submissions "+
-										" where q.pid=submissions.problem and qq.runid=submissions.runid)s "+
-										" on s.uid=user.uid "+
-										" where user.uid=:uid");
+		Query q = session.createSQLQuery("select user.uid,title,begindate,duedate,timelimit,memorylimit,ifnull(verdict,'未提交') as verdict,ifnull(accnt/totalcnt*100,0) as score,pid from user left join study on study.uid=user.uid left join problems on problems.cid=study.cid left join submissions on submissions.problem=problems.pid left join (select submissions.runid,ifnull(accnt,0) as accnt from submissions left join (select rid,count(*) as accnt from testresults where verdict='AC' group by rid)sq on sq.rid=submissions.runid)qq on qq.runid=submissions.runid left join (select testresults.rid,count(*) as totalcnt from testresults group by testresults.rid)ss on ss.rid=submissions.runid where user.uid=:uid");
 		q.setString("uid", CookieUtil.getUid(request));
 		List ls = q.list();
 		model.addObject("list",ls);

@@ -42,13 +42,7 @@ public class Submission {
 	@Column(name="tested")
 	private int tested;
 	
-	@Column(name="time")
-	private int time;
-	
-	@Column(name="memory")
-	private int memory;
-	
-	@Column(name="ceinfo")
+	@Column(name="ceinfo",nullable=true)
 	private String ceinfo;
 	
 	@ManyToOne(targetEntity=Problem.class,cascade=CascadeType.ALL , optional = true, fetch = FetchType.LAZY)
@@ -107,18 +101,7 @@ public class Submission {
 	public void setTested(int tested) {
 		this.tested = tested;
 	}
-	public int getTime() {
-		return time;
-	}
-	public void setTime(int time) {
-		this.time = time;
-	}
-	public int getMemory() {
-		return memory;
-	}
-	public void setMemory(int memory) {
-		this.memory = memory;
-	}
+
 	public String getCeinfo() {
 		return ceinfo;
 	}
